@@ -143,8 +143,12 @@ time.icon span
 }
 
 #controls img{
-	width: 30%;
+	width: 20%;
 	height:20%;
+}
+
+#controls img:hover {
+	background: aquamarine;	
 }
 #controls img[class='play']{
 	background: white;

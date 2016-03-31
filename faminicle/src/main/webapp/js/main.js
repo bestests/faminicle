@@ -64,6 +64,8 @@
 				$("#header").css({
 					top: "-10%"
 					});
+				// menu 버튼 숨기기
+				$("#angle").hide( {animation : { duration : 2500} } );
 				
 				menuStatus = true;
 				$(".main-3d").hide();
@@ -83,6 +85,9 @@
 					top: "0%",
 					"z-index": "1000"
 					});
+				
+				// menu 버튼 생성
+				$("#angle").show( {animation : { duration : 2500} } );
 				
 				$("#toggleBox").hide("slow");
 				$("#submenuBox").hide("slow");
@@ -573,7 +578,7 @@
 					$.getJSON(
 						contextRoot + "/chronicle/logout.do",
 						function(result) {
-							location.href="main5.html";
+							location.href="login.html";
 						}
 					)
 					swal({   title: "로그 아웃",   

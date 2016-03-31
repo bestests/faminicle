@@ -215,8 +215,8 @@
 	}
 	
 	#modalImgDrop > img {
-		width: 100%;
-		height: auto;
+		width: auto;
+		height: 100%;
 	}
 	
 	#infoModalImg {
@@ -255,8 +255,8 @@
 	
 	#angle{
 	top: 40%;
-    width: 50px;
-    height: 100px;
+    width: 40px;
+    height: 110px;
     background: #5f65c8;
     position: relative;
     left: 100%;
