@@ -25,7 +25,7 @@ $("#loginForm").submit(function(){
 					
 //					alert("로그인 되었습니다. "+resultObj.ajaxResult.data.name+" 님 안녕하세요!")
 
-					location.href="exercise01.html";
+					location.href="main.html";
 				}else{
 					console.log("로그인 실패");
 					alert("아이디 혹은 비밀번호가 일치하지 않습니다.다시한번 확인해주세요");

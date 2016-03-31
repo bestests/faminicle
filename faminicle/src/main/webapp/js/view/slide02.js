@@ -150,7 +150,7 @@ function getList() {
 				html:true
 			},
 			function(){
-				location.href="../views/main5.html";
+				location.href="../views/login.html";
 			}
 		);
 	});

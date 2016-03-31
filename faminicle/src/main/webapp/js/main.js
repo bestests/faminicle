@@ -39,7 +39,7 @@
 			pageNo++;
 		}).fail(function () {
 			alert("로그인 해주세요");
-			location.href="main5.html";
+			location.href="login.html";
 			
 		});
 		
