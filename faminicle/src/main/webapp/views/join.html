@@ -11,6 +11,8 @@
     <link href="../lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../lib/bootstrap/dist/css/font-awesome.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="../lib/bootstrap/dist/css/style.css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="../lib/sweetalert/dist/sweetalert.css">
+	<script type="text/javascript" src="../lib/sweetalert/dist/sweetalert-dev.js"></script>
   </head>
   <style>
 /*       body { */
@@ -78,7 +80,7 @@
                   <!--  bootstrap 기본 적용틀  -->
             <div class="form-group text-center">
               <button type="submit" type="button" class="btn btn-info" >회원가입<em class="fa fa-check spaceLeft"></em></button>
-              <button type="button" class="btn btn-warning" value="가입취소" onclick="location.href='main5.html'">가입취소<em class="fa fa-times spaceLeft"></em></button>
+              <button type="button" class="btn btn-warning" value="가입취소" onclick="location.href='login.html'">가입취소<em class="fa fa-times spaceLeft"></em></button>
             </div>
           </form>
         </div>
@@ -123,25 +125,49 @@
          
          var regTel = /^\d{10,11}$/;
          if( !regTel.test($("#tel").val())){
-            alert("연락처는 -없이 숫자(10~11자리)만 입력 가능합니다");
+       	  swal({   
+				title: "연락처는 -없이 숫자(10~11자리)만 입력 가능합니다.",   
+				text: "자동으로 닫혀요~",
+				imageUrl: "../images/느낌표.png",
+				timer:1500,
+				showConfirmButton: false 
+			});
             return false;
          }
          
          var regPass = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
          if( !regPass.test($("#pass").val())){
-            alert("비밀번호는 특수문자와 숫자를 포함하여 8~16자로 설정하여야합니다.");
+       	  swal({   
+				title: "비밀번호는 특수문자와 숫자를 포함하여 8~16자로 설정 하여야 합니다.",   
+				text: "자동으로 닫혀요~",
+				imageUrl: "../images/느낌표.png",
+				timer:1500,
+				showConfirmButton: false 
+			});
             return false;
          }
          
          
          
          if(idFlag==false){
-            alert("중복된 아이디 입니다");
+       	  swal({   
+				title: "중복된 아이디 입니다", 
+				text: "자동으로 닫혀요~",
+				imageUrl: "../images/느낌표.png",
+				timer:1500,
+				showConfirmButton: false 
+			});
             return false;
          }
          
          if($("#pass").val() != $("#pass2").val()){
-            alert("비밀번호가 일치하지 않습니다. 다시한번 확인해주세요");
+        	  swal({   
+					title: "비밀번호가 일치하지 않습니다..",   
+					text: "자동으로 닫혀요~",
+					imageUrl: "../images/느낌표.png",
+					timer:1500,
+					showConfirmButton: false 
+				});
             $("#pass2").focus();
             return false;
          }
@@ -155,8 +181,15 @@
                console.log(resultObj);
                console.log(resultObj.data);
                console.log(resultObj.members.id);
-               alert("등록이 완료되었습니다");
-               location.href="main5.html";
+               swal({   
+					title: "등록이 완료 되었습니다.",   
+					text: "자동으로 닫혀요~.",
+					imageUrl: "../images/slide/success.jpg",
+					timer:2000,
+					showConfirmButton: false 
+				});
+           
+               location.href="login.html";
             },"json");
          
          return false;

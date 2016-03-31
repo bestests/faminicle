@@ -28,7 +28,13 @@ $("#loginForm").submit(function(){
 					location.href="main.html";
 				}else{
 					console.log("로그인 실패");
-					alert("아이디 혹은 비밀번호가 일치하지 않습니다.다시한번 확인해주세요");
+					swal({   
+						title: "로그인 실패",   
+						text: "아이디 혹은 비밀번호가 맞지 않습니다. 다시한번 확인해주세요~",
+						imageUrl: "../images/slide/014.gif",
+						timer:3000,
+						showConfirmButton: true 
+					});
 				}
 				    
 			},"json");
@@ -124,7 +130,7 @@ $("#registMember").submit(function () {
          
          
          
-         location.href="main5.html";
+         location.href="login.html";
       },"json") 
       .fail(function(){	
       	alert("실패");
