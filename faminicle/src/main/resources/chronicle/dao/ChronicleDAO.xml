@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="chronicle.dao.ChronicleDAO">
+	
+	<resultMap type="eventday" id="eventdayMap">
+		<result column="ev_no" property="evNo" />
+		<result column="mem_no" property="memNo" />
+		<result column="ev_title" property="evTitle" />
+		<result column="ev_start" property="evStart" />
+		<result column="ev_end" property="evEnd" />
+	</resultMap>
+	
+	<resultMap type="regist" id="picMap">
+		<result column="PIC_NO" property="picNo" />
+		<result column="MEM_NO" property="memNo" />
+		<result column="TITLE" property="title" />
+		<result column="PIC_DATE" property="regDate" />
+		<result column="PIC_FILE_PATH" property="picFilePath" />
+		<result column="lat" property="lat" />
+		<result column="lng" property="lng" />
+	</resultMap>
+	
+	<resultMap type="members" id="loginMap">
+		<result column="mem_no" property="memNo" />
+		<result column="id" property="id" />
+		<result column="pass" property="pass" />
+		<result column="e_mail" property="eMail" />
+		<result column="mem_pic_Path" property="memPicPath" />
+		<result column="name" property="name" />
+		<result column="birthday" property="birthday" />
+		<result column="tel" property="tel" />
+	</resultMap>
+	
+	<select id="selectList" resultMap="picMap">
+		select *
+		  from fam_pic
+		 order by pic_date desc
+		 limit 24
+	</select>
+	<select id="selectPrevList" parameterType="page" resultMap="picMap">
+		select t1.*
+		  from (
+		  		select t.* 
+		  		  from (
+				  		select *
+				  		  from fam_pic
+				  		 where pic_date >= #{startDate}
+				  		 order by pic_date asc
+		  		  		)as t
+		  		  where pic_no > #{pageNo} 	
+		  		  limit 24	
+		  		)as t1
+		 order by pic_date desc  		
+	</select>
+	
+	<select id="selectNextList" parameterType="page" resultMap="picMap">
+		select t1.* 
+			from (
+				select t.* 
+				  from (
+						select * 
+							from fam_pic 
+							where pic_date  <![CDATA[<=]]> #{startDate}
+							order by pic_date desc
+						)as t 
+				limit #{pageNo} , 24
+				)as t1 
+		order by pic_date desc 
+	
+	</select>
+	
+	<insert id="insertMember" parameterType="members">
+		insert into fam_member(id,pass,e_mail,name,birthday,tel)
+		values(#{id},#{pass},#{eMail},#{name},#{birthday},${tel})
+	</insert>
+	
+	<select id="checkId" parameterType="members" resultType="int">
+		select count(*)
+		from fam_member
+		where id = #{id}
+	</select>
+	
+	<insert id="insertpic" parameterType="regist">
+		insert into fam_pic(MEM_NO, TITLE, PIC_DATE, PIC_FILE_PATH, LAT, LNG)
+		values(#{memNo}, #{title}, #{regDate}, #{picFilePath}, #{lat}, #{lng})
+	</insert>
+	
+	<select id="seletePicByEvent" parameterType="EventDay" resultMap="picMap">
+		select * 
+		from fam_pic
+		where PIC_DATE <![CDATA[>=]]> #{evStart} 
+			and PIC_DATE <![CDATA[<=]]> #{evEnd}
+			and MEM_NO = #{memNo}
+			order by PIC_DATE
+	</select>
+	
+	<!-- 회원 관련 쿼리  -->
+	<select id="loginCheck" parameterType="LoginCheck" resultMap="loginMap">
+		select *
+		from fam_member
+		where id= #{id} and pass=#{pass}
+	</select>
+		
+	<select id="checkPass" parameterType="members" resultType="members">
+		select pass
+		  from fam_member
+		 where id = #{id} 
+	</select>
+	
+	<select id="memberInfo" parameterType="members" resultMap="loginMap">
+		select * 
+		from fam_member
+		where id = #{id}
+	</select>
+	
+	<update id="updateMember" parameterType="members">
+		update fam_member
+		set pass   = #{pass}, 
+			e_Mail = #{eMail},
+			tel    = #{tel}
+		where id = #{id} 
+	</update>
+	
+	<update id="updateMemberPic" parameterType="members">
+		update fam_member
+		set mem_pic_path = #{memPicPath}
+		where id = #{id}
+	</update>
+	
+
+	<!-- 기념일 설정 쿼리  -->
+	
+	<!-- member 번호로 기념일 조회 -->
+	<select id="selectEventByMem" parameterType="int" resultMap="eventdayMap">
+		select *
+		  from eventday
+		 where mem_no = #{memNo} 
+	</select>
+	
+	<!-- 기념일 등록  -->
+	<insert id="insertEvent" parameterType="eventDay" useGeneratedKeys="true" keyProperty="evNo">
+		insert into eventday(mem_no, ev_title, ev_start, ev_end)
+		values(#{memNo}, #{evTitle}, #{evStart}, #{evEnd})
+	</insert>
+	
+	<!-- insert 후 1개 기념일 조회  -->
+	<select id="selectEventOne" parameterType="int" resultMap="eventdayMap">
+		select *
+		  from eventday
+		 where ev_no = #{evNo} 
+	</select>
+	
+	<!-- 기념일 삭제   -->
+	<delete id="deleteEvent" parameterType="int">
+		delete
+		  from eventday
+		 where ev_no = #{evNo} 
+	</delete>
+	<!-- 수정  -->
+	<update id="updateEvent" parameterType="Regist" > 
+		update fam_pic
+		set  title = #{title} , pic_date = #{regDate}
+		where pic_no= #{picNo} 
+	</update>
+	<!-- 사진삭제  -->
+	<delete id="deletePic" parameterType="int">
+		delete 
+		from fam_pic
+		where pic_no = #{picNo}
+	</delete>
+	
+	<!-- 가족 이름 중복 체크  -->
+	<select id="selectFamByName" parameterType="string" resultType="int">
+		select count(*)
+		  from fam_request
+		 where fam_name = #{famName} 
+	</select>
+	
+	<!-- 가족 신청 수락 후 업데이트  -->
+	<update id="updateFamAfterAccept" parameterType="family">
+		update fam_request
+		   set fam_name = #{famName}, fam_status = 'Y'
+  	     where fam_req_id_no = #{famReqIdNo}
+  	       and fam_res_id_no = #{famResIdNo}
+	</update>
+</mapper>

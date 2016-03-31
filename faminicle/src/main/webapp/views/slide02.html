@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Slide View </title>
+
+<link rel="stylesheet" type="text/css" href="../css/slide02.css" >
+<link rel="stylesheet" type="text/css" href="../lib/bootstrap/dist/css/bootstrap.css" >
+<link rel="stylesheet" type="text/css" href="../lib/sweetalert/dist/sweetalert.css">
+
+</head>
+<body id='bbody' onselectstart="return false" >
+<!-- 		<time datetime="2014-09-20" class="icon"> -->
+<!-- 		  <em>.</em> -->
+<!-- 		  <strong>2014</strong> -->
+<!-- 		  <span>09.20</span> -->
+<!-- 		</time> -->
+	
+	<div class="container">
+	<div class="calendar">	
+	</div>
+	<div id="view" align="center">
+		<ul id="stack">
+		</ul>
+	</div>
+	
+	<!-- Modal Start -->
+	<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header" align="center">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel" >Update</h4>
+			      </div>
+			      <form id="mUpdate">
+			      <div class="modal-body">
+			         <input id="regDate" name="regDate" type="date" />
+			      	 <input id="content" name="title" type="text" />
+<!-- 			      	 <div id="mtitle" name="content"></div> -->
+			         <input id="no" name="no" type="hidden" value=""/>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			        <button type="submit"  class="btn btn-primary">수정</button>			        			        
+			      </div>
+			      </form>
+			    </div>
+			  </div>
+			</div>	
+	<!-- Modal End -->
+	
+	
+	<div id="controls">
+		<div id="one" align="center">
+			<img class="prev" src="../images/slide/prev.png"  />
+			<img id="play" src="../images/slide/play.png" />
+			<img class="next" src="../images/slide/next.png" />
+		</div>
+		<div id="two" align="center">	
+			<select id="speed">
+				<option value="1" selected="selected">1초</option>
+				<option value="3">3초</option>
+				<option value="5">5초</option>
+			</select>
+	
+		</div>
+	</div>
+	</div>
+	<script src="../lib/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="../lib/jquery/dist/jquery.js"></script>
+	<script src="../lib/bootstrap/js/modal.js"></script>
+	<script src="../js/jquery.mousewheel.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/view/slide02.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+</body>
+</html>
