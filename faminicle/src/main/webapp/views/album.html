@@ -3,47 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="../lib/sweetalert/dist/sweetalert.css">
 <style>
 *{
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 	box-sizing: border-box;
 }
 body, html{
 	width: 100%;
 	height: 100%;
+	background-image: url("../images/back01.jpg");
+	background-size: 100%;
+}
+#header{
+	width: 100%;
+	height: 11%;
+	margin: 0px;
+	padding: 0px;
 }
 #book{
-	height: 90%;
-}
-.date {
-	width: 30%;
-	text-align: center;
-	background: black;
-	color:white;
-}
-.date:hover{
-	background: rgba(0,180,0,0.3);
-}
-#tab{
+	height: 88% !important;
 	width: 100%;
-	height: 10%;
-	border-bottom: 1px solid black;
+	background: rgba(255,255,255,0);
+	top: 1%;
+}
+#date {
+	width: 30%;
+	height: 30%;
+	text-align: center;
+	background: lightgray;
+	color:black;
+	overflow: hidden;
+	display: inline-block;
+	margin: 3px;
+	padding: 7px;
+	border-radius: 0.5em;
+	border : 1px solid gray;
+	padding : 5px;
 	
 }
-#tab > div {
+#date:hover{
+	background: rgba(0,0,0,0.6);
+}
+#date > img {
+	width: 50px;
+	height: 50px;
+	margin: 5px;
+	border: 2px solid white;
+}
+#tabline{
+	width: 89%;
 	height: 100%;
-	width: 10%;
+	background: #865555;
+	display: inline-block;
+	overflow: hidden;
+}
+#tab{
+	position:relative;
+	left: 0;
+	width: 1000%;
+	height: 100%;
+	background: #865555;	
+	padding: 0px;
+}
+#tab > div {
+	position: relative;
+	height: 100%;
+	width: 1%;
 	float: left;
+	background:lightblue;
 	text-align: center;
 	border: 1px solid black;
 	border-radius: 0.5em 0.5em 0 0;
+	color: black;
+	line-height: 29px;
+}
+#tab > div:hover{
+	background: #d35f7a;
+	color: black;
 }
 .page img{
 	width: auto;
 	height: auto;
 	max-width: 45%;
 	max-height: 48%;
+	min-width: 33%;
 	border: 1px solid blue;
 	margin: auto;
 	margin-left: 5px;
@@ -51,12 +96,66 @@ body, html{
 }
 .page {
 	height: 100%;
+	margin: auto;
+	
 }
-
+#back{
+	width: 100px;
+	height: 100px;
+	background: white;
+	position: absolute;
+	right: -49px;;
+	top: -65px;
+	transform: rotate(40Deg);
+}
+#prev, #next{
+	width: 5%;
+	height: 90%;
+	display: none;
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+#prev>img, #next>img{
+	width: 100%;
+	height: 100%
+}
+#menu {
+	width: 6%;
+	height: 62%;
+	background: #d35f7a;
+	position: fixed;
+	right: 1.5%;
+	top: 23%;
+	text-align: center;
+	border: 1px solid white;
+}
+#menu > div {
+	height: 81px;
+	width: 100%;
+	text-align: center;
+	line-height: 81px;
+	color: white;
+}
+#menu > span{
+	width: 100%;
+	height: 6%;
+	display: block;
+	color: white;
+}
+#menu > div:hover{
+	background: lightblue;
+	color: black;
+}
+#menu > img {
+	width: 100%;
+	border: 2px solid black;
+	
+}
 
 </style>
 <link rel="stylesheet" href="../js/booklet/booklet/jquery.booklet.latest.css">
 <script src="../js/jquery-2.2.0.js"></script>
+<script src="../lib/sweetalert/dist/sweetalert.min.js"></script>
 <script src="../js/booklet/booklet/jquery.easing.1.3.js"></script>
 <script src="../js/booklet/booklet/jquery.booklet.latest.js"></script>
 <script src="../js/booklet/booklet/jquery-ui-1.10.4.min.js"></script>
@@ -66,9 +165,14 @@ body, html{
 
 <script>
 	$(function(){
+		var index = 0;
+		var index2 = 0;
+		var left = 0;
+		var count = 0;
 		$.post(
 			contextRoot + "/chronicle/selectEvent.do",function(result){
 				var result = result.ajaxResult;
+				console.log(result.data);
 				for(var i in result.data) {
 					if(result.data[i].evEnd != '1000-01-01'){
 						html="<div class='tap'>"+result.data[i].evStart+" <br/>~ <br/>" +result.data[i].evEnd 
@@ -78,9 +182,9 @@ body, html{
 						+"</form>"
 						+"</div>";
 						
-						bookHtml="<div class='date'>"
-						+"<h1>"+result.data[i].evTitle+"</h1>"
-						+"<h5>"+result.data[i].evStart+" 부터 <br/>" +result.data[i].evEnd + " 까지</h5>"
+						bookHtml="<div class='date"+[i]+"' id='date'>"
+						+""+result.data[i].evTitle+"<br>"
+						+""+result.data[i].evStart+" ~ "+result.data[i].evEnd+""
 						+ "<form id='bForm'>"
 						+"<input type='hidden' name='evStart' value='"+result.data[i].evStart+"'>"
 						+"<input type='hidden' name='evEnd' value='"+result.data[i].evEnd+"'>"
@@ -88,17 +192,59 @@ body, html{
 						+"</div>";
 						
 						$("#tab").append(html);
+						
 						init_masonry ();
-						$("#book").append(bookHtml).masonry("appended", bookHtml, true);	        
-						$("#book").masonry("reloadItems");	        
+						$("#book").append(bookHtml).masonry("appended", bookHtml, true);	
+						$("#book").masonry('reloadItems');
 						$("#book").masonry("layout");
 					}
-						
+					$.post(
+							contextRoot + "/chronicle/seletePicByEvent.do",
+								{evStart: result.data[i].evStart,
+								evEnd: result.data[i].evEnd},	
+							function(result){
+								var result = result.ajaxResult
+								for(var k in result.data) {
+									var picFilePath = result.data[k].picFilePath.substring(0, result.data[k].picFilePath.lastIndexOf("."));
+									picFilePath += "_mini.jpg";
+									html="<img src='"+picFilePath+"'/>";
+									$(".date"+index).append(html);
+									index2++;
+									if(index2 == result.data.length){index++; index2 = 0;};
+								}
+							},"json"
+					);
 					
-					
+				}
+				if($("#tab").children().length > 10){
+					$("#prev, #next").css({display:'inline-block'});
 				}
 			},"json"
 		);
+		$.getJSON(contextRoot + "/chronicle/list.do", function (result) {
+			html="<img src='"+result.member.picMiniFilePath+"'>";
+			$("#menu").prepend(html);
+			$("#name").html(result.member.name + " 님");
+			
+		});
+		$("#next").click(function(){
+			if($("#tab").children().length-10 > count){
+			 left += -10;
+			$("#tab").css({left:''+left+'%'});
+			 count++;
+			}else{
+				swal({   title: "마지막 탭입니다.",   timer: 1000,   showConfirmButton: false, type: "warning" });
+			}
+		});
+		$("#prev").click(function(){
+			if(count != 0){
+			 left += 10;
+			$("#tab").css({left:''+left+'%'});
+			 count--;
+			}else{
+				swal({   title: "처음 탭입니다.",   timer: 1000,   showConfirmButton: false, type: "warning" });
+			}
+		});
 		
 		$("#tab").on('click',$(".tap"), function(event) {
 			var form = $(event.target).children()[2];
@@ -145,18 +291,17 @@ body, html{
 			);
 			$("#tab div").css({background:'white','border-bottom-style': 'solid',color:'black'})
 			$(event.target).css({background:'sky-blue',color:'white',background:'maroon'})
+			$("#tab").css({background:'white'});
 		});
 		
-		$("#book").on('click',$(".date"), function(event) {
-			var form = ($(event.target).siblings())[1];
-			var formData = new FormData(form);
-			$.ajax({
-				url:contextRoot + "/chronicle/seletePicByEvent.do",
-				processData: false,
-				contentType: false,
-				data: formData,
-				type: 'POST',
-				success:function(result){
+		$("#book").on('click',$("#date"), function(event) {
+			console.log(this)
+			var form = ($(event.target).children("form"));
+			form.children("[name='evStart']").val();
+			$.post(
+				contextRoot + "/chronicle/seletePicByEvent.do",
+				{evStart: form.children("[name='evStart']").val(),
+				evEnd: form.children("[name='evEnd']").val()},function(result){
 					var result = result.ajaxResult
 					console.dir(result);
 					var ac = result.data.length%4;
@@ -180,7 +325,7 @@ body, html{
 							}
 							count = count - 4;
 						html +="</div>";
-					}
+						}
 					}
 					$("#book").unbind( 'click' );
 					$("#book").append(html);
@@ -189,11 +334,35 @@ body, html{
 				    	width: '99%',
 				    	pagePadding: 10
 				    });
-				},dataType:"json"}
-			
+				},"json"
 			);
-			
 		});
+		$("#logOut").click(function() {
+			swal({   title: "<span style='color:#FF0000'> 로그아웃 하시겠습니까? </span>",   
+				text: "클릭시 로그아웃 됩니다.",   
+				imageUrl: "../images/slide/balls.svg",
+				confirmButtonColor:"#DD6B55",
+				showCancelButton:true,
+				closeOnConfirm:false,
+				html:true
+			},
+		function(inConfirm) {
+				
+				if(inConfirm) {
+					$.getJSON(
+						contextRoot + "/chronicle/logout.do",
+						function(result) {
+							location.href="main5.html";
+						}
+					)
+					swal({   title: "로그 아웃",   
+						text: "Faminicle을 이용해주셔서 감사합니다.",   
+						imageUrl: "../images/slide/success.jpg" });
+						
+				}
+			});
+			return false;
+		})
 	});
 	
 	function init_masonry () {
@@ -209,9 +378,27 @@ body, html{
 </script>
 </head>
 <body>
-	<div id="tab">
+	<div id="header">
+	<div id="prev">
+		<img src="../images/left.png">	
+	</div>
+	<div id="tabline">
+		<div id="tab"></div>
+	</div>
+	<div id="next">
+		<img src="../images/right.png">	
+	</div>
 	</div>
 	<div id="book">
+	</div>
+	<div id="menu">
+		<span id="name"></span>
+		<div id="home" onclick="location.href='main.html'">메인으로 </div>
+		<div id="top" onclick="location.href='album.html'">처음으로 </div>
+		<div id="slide" onclick="location.href='slide.html'">슬라이드 </div>
+		<div id="regist" onclick="location.href='regist.html'">사진등록 </div>
+		<div id="logOut">로그아웃</div>
+		
 	</div>
 </body>
 </html>

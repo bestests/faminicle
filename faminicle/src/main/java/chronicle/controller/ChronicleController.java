@@ -226,7 +226,6 @@ public class ChronicleController {
 	}
 	
 	@RequestMapping("Regist.do")
-	@ResponseBody
 	public AjaxResult register(Regist regist, MultipartHttpServletRequest mRequest) throws Exception{
 		Members member = (Members)mRequest.getSession().getAttribute("loginInfo");
 		regist.setMemNo(member.getMemNo()+"");
@@ -248,6 +247,28 @@ public class ChronicleController {
 				String srcPath = "../upload/"+ sdfPath;
 				mFile.transferTo(new File(saveFullFileName));
 				regist.setPicFilePath(srcPath+realFileName);
+				try {
+		            //썸네일 가로사이즈
+		            int thumbnail_width = 100;
+		            //썸네일 세로사이즈
+		            int thumbnail_height = 100;
+		            //원본이미지파일의 경로+파일명
+		            saveFullFileName = filePath+"/"+realFileName;
+		            File origin_file_name = new File(saveFullFileName);
+		            //생성할 썸네일파일의 경로+썸네일파일명
+		            
+		            String picMiniFilePath = saveFullFileName.replace(ext, "_mini.jpg");
+		            File thumb_file_name = new File(picMiniFilePath);
+		            
+		            BufferedImage buffer_original_image = ImageIO.read(origin_file_name);
+		            BufferedImage buffer_thumbnail_image = new BufferedImage(thumbnail_width, thumbnail_height, BufferedImage.TYPE_3BYTE_BGR);
+		            Graphics2D graphic = buffer_thumbnail_image.createGraphics();
+		            graphic.drawImage(buffer_original_image, 0, 0, thumbnail_width, thumbnail_height, null);
+		            ImageIO.write(buffer_thumbnail_image, "jpg", thumb_file_name);
+		            System.out.println("썸네일 생성완료");
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
 			}
 		}
 		service.registpic(regist);
