@@ -547,11 +547,11 @@
 								contextRoot + "/chronicle/delete.do",
 								{no: picNo},
 								function (result) {
-									$("[value="+picNo+"]").parents("div.box").remove();
+//									$("[value="+picNo+"]").parents("div.box").remove();
 //									$(".form-group").children("[type=hidden]").val();
 //									console.log(result);
 									$("#myModal").modal("hide");
-								
+									$("#content").masonry( 'remove', $("[value="+picNo+"]").parents("div.box")).masonry('layout');
 								}, "json"
 							)
 						
