@@ -38,7 +38,9 @@
 			
 			pageNo++;
 		}).fail(function () {
-			alert("로그인 해주세요");
+			swal({   title: "로그인 해주세요!! ^^",   
+				text: "로그인 하셔야 faminicle 서비스를 이용 하실 수 있습니다.",   
+				imageUrl: "../images/slide/014.gif" });
 			location.href="login.html";
 			
 		});
