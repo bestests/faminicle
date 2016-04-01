@@ -49,24 +49,51 @@
 			</div>	
 	<!-- Modal End -->
 	
-			<img id="mainBt" src="../images/back1.jpg" />
-	<div id="controls">
-		<div id="one" align="center">
-			<img class="prev" src="../images/slide/뒤로.png"  />
-			<img id="play" src="../images/slide/play1.png" />
-			<img class="next" src="../images/slide/앞으로.png" />
-		</div>
-		<div>
-		</div>
-		</br>
-		<div id="two" align="center">	
-			<select id="speed">
-				<option value="1" selected="selected">1초</option>
-				<option value="3">3초</option>
-				<option value="5">5초</option>
-			</select>
-		</div>
-	</div>
+			
+<!-- 	<div id="controls"> -->
+<!-- 		<div id="one" align="center"> -->
+<!-- 			<img class="prev" src="../images/slide/뒤로.png"  /> -->
+<!-- 			<img id="play" src="../images/slide/play1.png" /> -->
+<!-- 			<img class="next" src="../images/slide/앞으로.png" /> -->
+<!-- 			<img id="mainBt" src="../images/back1.jpg" !important width="60px" height="auto" onclick="location.href='main.html'" />  -->
+<!-- 		</div> -->
+<!-- 		<div> -->
+<!-- 		</div> -->
+<!-- 		<div id="select_box"> -->
+<!-- 		    <label for="color">슬라이드 타임</label> -->
+<!-- 		    <select id="color" title="select color"> -->
+<!-- 		        <option selected="selected" value="1">1초</option> -->
+<!-- 		        <option value="2">2초</option> -->
+<!-- 		        <option value="3">3초</option> -->
+<!-- 		        <option value="5">5초</option> -->
+<!-- 		    </select> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+
+	<!-- 테스트 -->
+	 <div id="footer"> 
+ 			<div></div>
+			<div id="main" onclick="location.href='main.html'" >메인으로</div>
+		 	<div id="regist" onclick="location.href='regist.html'" >사진등록</div>
+		 	<div id="album" onclick="location.href='album.html'" >사진 앨범</div>
+			<div class="prev"><img src="../images/slide/뒤로.png" height="45px"></div>
+			<div id="play"><img src="../images/slide/play2.png" height="45px">
+				<div id="selectSpeed">
+					<div id="play" class="1">1</div>
+					<div id="play" class="3">3</div>
+					<div id="play" class="5">5</div>
+				</div>
+			</div>
+			<div class="next"><img src="../images/slide/앞으로.png" height="45px"></div>
+			<div></div>
+			<div id="infoId"></div>
+ 			<div id="logOut" >로그아웃</div> 
+	 </div>
+	
+	
+
+
+
 	</div>
 	<script src="../lib/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="../lib/jquery/dist/jquery.js"></script>
