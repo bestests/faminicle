@@ -177,7 +177,7 @@ function getList() {
 	});
 		
 	}
-//		$("#play").click(selectSpeed)
+		$("#play").click(selectSpeed)
 		$("#stack").on("click",".imgView",imgDown);
 		$("#stack").on("click",".leftContent",imgUp);
 		$("body").on("mousewheel", wheelEvent);
@@ -356,6 +356,12 @@ function deleteEvent(event) {
 	
 	event.stopPropagation();
 }
+
+function selectSpeed(event){
+	   if($(event.target).attr("class")){
+	   speed = $(event.target).attr("class");
+	   }
+	}
 
 function mapEvent(event){
 	
