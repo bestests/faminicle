@@ -17,7 +17,7 @@ body{
 	
 	overflow:hidden;
 /* 	background: url('../images/slide/slide.jpg') ; */
-	background: url('../images/slide/simple6.jpg') ;
+	background: url('../images/slide/simple6.png') ;
 /* 	background-color:aqua !important; */
 	background-repeat:no-repeat;
 	background-size: 100% 100%;
@@ -195,8 +195,8 @@ time.icon span
 /* 	background-color: rgba(64,255,0,0.8); */
 /* 	background-color: rgba(1,116,223,0.8); */
 	background-color: rgba(255,191,0,0.8);
-/* 	border-top-left-radius:5%; */
-/* 	border-bottom-left-radius:5%; */
+	border-top-left-radius:5%;
+	border-bottom-left-radius:5%;
 	 
 	float:left;
 /* 	width: 50%; */
@@ -325,14 +325,112 @@ iframe{
 }
 /* Modal */
  #mtitle{
-	
 	font-size: 50px;
-		
 }
+
+ #mainBt{
+ 	border-radius: 30px;
+    width: 60px !important;
+    height: auto !important;
+    position: absolute;
+    left: 400px;
+    bottom: 40px;
+ } 
 
 
 /* controls */
 #play{
-	background: white;
+/* 	background: white; */
 }
 
+
+/* footer 작업 */ 
+
+#footer {
+	margin-left: -3%;
+    width: 93%;
+    height: 9%;
+    position: absolute;
+    transition: 0.3s;
+    text-align: center;
+    border-radius: 15px;
+    color: white;
+    bottom: 0px;
+}
+
+#footer > div {
+    float: left;
+    height: 100%;
+    width: 10%;
+    line-height: 450%;
+}
+
+/*  #footer >div:hover {  */
+#main:hover, #regist:hover, #album:hover, .prev:hover, #play:hover, .next:hover, #logOut:hover, #family:hover {
+	background: lightblue;
+   	border-radius: 20px;
+	color: black;
+	transition: .3s;	
+}
+
+/* 슬라이드 하위 메뉴 */
+
+#selectSpeed{
+/* 	outline: 3px solid red; */
+	position: absolute;
+	bottom: 144%;
+	width: 30%;
+	height: 50%;
+	left:40%;
+}
+
+#play{
+	display: inline-block;
+	float: left;
+	width: 33%;
+	
+}
+
+/* #play1s { */
+/* 	position: absolute; */
+/* 	bottom: 100%;	 */
+/* 	left: 590px; */
+/* 	height: 85%; */
+/* 	width: 7%; */
+/* 	background: salmon; */
+/* 	border-top-left-radius: 15px; */
+/*     border-bottom-left-radius: 15px; */
+/* } */
+	
+/* #play3s { */
+/* 	position: absolute; */
+/* 	bottom: 100%; */
+/*     left: 682px; */
+/* 	height: 85%; */
+/* 	width: 7%; */
+/* 	background: silver; */
+/* } */
+
+/* #play5s { */
+/* 	position: absolute; */
+/* 	bottom: 100%;	 */
+/* 	left: 773px; */
+/* 	height: 85%; */
+/* 	width: 7%; */
+/* 	background: paleturquoise; */
+/* 	border-top-right-radius: 15px; */
+/*     border-bottom-right-radius: 15px; */
+/* } */
+
+#play div div{
+	display: none;	
+	background: darkslateblue;
+	border-radius: 15px; 	
+}
+#play:hover div div{
+	display: block;	
+}
+
+#play:hover div:hover .1:hover {
+/* 	background: orange; */
+}

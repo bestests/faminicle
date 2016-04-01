@@ -134,11 +134,11 @@
 			$("#file").click();
 		})
 		
-		$("#modalImgDrop").change(function () {
-			$("header").location.href="exercise01.html";
-		});
-		
-		/* info modal */
+//			$(document).ready(function () {
+//				$("")
+//			})
+			
+	    /* info modal */
 		$("#infoId").on("click" , function (event) {
 			event.stopPropagation();
 			/* 비밀번호 초기화 작업 */ 

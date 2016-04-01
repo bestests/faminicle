@@ -19,12 +19,13 @@ var selectIndex;
 var selectMemNo;
 
 
-
+var speed = 1;//슬라이드쇼 스피드
 //slideEvent
 var y_space = 30, z_space = 50;
 //controls : 자동재생에 관련된 이전화면, 다음화면 		rotate_controls: 사용자 관점에서보기
 var view, lis,z_index;
-var prev = $('#controls .prev'), next = $('#controls .next');
+//var prev = $('#controls .prev'), next = $('#controls .next');
+var prev = $('#footer .prev'), next = $('#footer .next');
 var current_index = 1, translate_y = y_space * -1, translate_z = z_space * -1;
 var realCurrent_index;
 var realFlag=false;
@@ -144,7 +145,8 @@ function getList() {
 //		console.log("현재 y : "+translate_y+"현재 x: "+translate_z);
 		slideViewEvent();
 		if(slideShow==true){
-			$("#controls").hide("slow");
+//			$("#controls").hide("slow");
+			$("#footer").hide("slow");
 			$("#view * li").hide();
 			lis.filter(':nth-child(' + (current_index) + ')').show();
 			$("#stack li").css("margin-top","-5%");
@@ -175,6 +177,7 @@ function getList() {
 	});
 		
 	}
+//		$("#play").click(selectSpeed)
 		$("#stack").on("click",".imgView",imgDown);
 		$("#stack").on("click",".leftContent",imgUp);
 		$("body").on("mousewheel", wheelEvent);
@@ -389,7 +392,7 @@ function mapEvent(event){
 
 function slideEvent(event) {
 	slideShow=true;
-	$("#controls").hide("slow");
+	$("#footer").hide("slow");
 	$("#view * li").hide();
 	lis.filter(':nth-child(' + (current_index) + ')').show();
 	
@@ -408,10 +411,9 @@ function slideEvent(event) {
 					});
 	
 	controlStatus = false;
-	if(!slideSpeed){
-		slide = setInterval(showImg, $("#speed").val() * 1000);
-		slideSpeed=true;
-	}
+//	slide = setInterval(showImg, $("#speed").val() * 1000);
+	console.log(speed);
+	slide = setInterval(showImg, speed * 1000);
 	
 	event.stopPropagation();
 }
@@ -428,7 +430,7 @@ function stopSlide() {
 		}		
 		
 		if (!controlStatus) {
-			$("#controls").show("slow");
+			$("#footer").show("slow");
 			$("#view * li").show();
 			clearInterval(slide);
 			controlStatus = true;
@@ -445,7 +447,6 @@ function stopSlide() {
 			
 			
 			$(".container").removeAttr("style");
-			slideSpeed=false;
 		}
 	}
 }
@@ -759,6 +760,48 @@ function selectPicView(){
 		}
 	);
 }
+
+
+
+
+jQuery(document).ready(function () {
+	
+	var select = $("select#color");
+	
+	select.change(function() {
+		
+		var select_name = $(this).children("option:selected").text();
+		
+		$(this).siblings("label").text(select_name);
+	});
+});
+
+//======================로그아웃 세션삭제 ===============================
+$("#logOut").click(function() {
+	swal({   title: "<span style='color:#FF0000'> 로그아웃 하시겠습니까? </span>",   
+		text: "클릭시 로그아웃 됩니다.",   
+		imageUrl: "../images/slide/balls.svg",
+		confirmButtonColor:"#DD6B55",
+		showCancelButton:true,
+		closeOnConfirm:false,
+		html:true
+	},
+function(inConfirm) {
+		
+		if(inConfirm) {
+			$.getJSON(
+				contextRoot + "/chronicle/logout.do",
+				function(result) {
+					location.href="login.html";
+				}
+			)
+			swal({   title: "로그 아웃",   
+				text: "Faminicle을 이용해주셔서 감사합니다.",   
+				imageUrl: "../images/slide/success.jpg" });
+		}
+	});
+	return false;
+})
 
 
 
