@@ -28,7 +28,7 @@ public class ChronicleServiceImpl implements ChronicleService{
 	
 	@Override
 	public List<Regist> selectNextList(Page page) {
-		System.out.println("형식:"+page.getCall()+"페이지번호:"+page.getPageNo()+"시작일자:"+page.getStartDate()+"회원번호:"+page.getMemNo());
+		System.out.println("call:"+page.getCall()+"페이지번호:"+page.getPageNo()+"시작일자:"+page.getStartDate()+"회원번호:"+page.getMemNo());
 		return dao.selectNextList(page);
 	}
 

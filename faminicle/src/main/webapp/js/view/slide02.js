@@ -31,7 +31,7 @@ var realFlag=false;
 var doubleStopFlag=false;// 다음페이지,이전페이지 중복 방지
 //slideEvent
 var html="";
-var call="fam";
+var call="me";
 //var famStyle='style="background-color: rgba(1,116,223,0.8);"';
 
 getList();
@@ -106,7 +106,8 @@ function getList() {
 			+'				<input type="hidden" id="xPoint" value="'+result.registList[i].lat+'"/>                                                     '
 			+'				<input type="hidden" id="yPoint" value="'+result.registList[i].lng+'" />                                                     '
 			+'				<input type="hidden" id="mNo" value="'+result.registList[i].memNo+'" />                                                     '
-			+'				<p class="thumb_'+i+'"></p>                                                                  '
+			+'				<input type="hidden" id="realMemNo" value="'+result.member.memNo+'" />                                                     '
+			+'				<div class="thumbImg" id="thumb_'+i+'"></div>                                                                  '
 			+'				<div class="imgIcon">                                                      '
 			+'					<button id="update" class="left"><img src="../images/slide/modify.png"/></button>'
 			+'					<button id="delete" class="left"><img src="../images/slide/delete.png"/></button>'
@@ -183,6 +184,7 @@ function getList() {
 		$("#play").click(slideEvent);
 		$("body").dblclick(stopSlide);
 		$("#mUpdate").submit(mUpdate);
+		$("#toggleView").click(selectPicView);
 			
 
 function imgDown(event) {
@@ -197,6 +199,7 @@ function imgDown(event) {
 	selectXpoint = $this.children(":eq(3)").val();
 	selectYpoint = $this.children(":eq(4)").val();
 	selectMemNo = $this.children(":eq(5)").val();
+	selectRealMemNo = $this.children(":eq(6)").val();
 	
 	console.log(selectIndex);
 	console.log(selectDate);
@@ -206,16 +209,21 @@ function imgDown(event) {
 	console.log(selectYpoint);
 	console.log(selectMemNo);
 	
-	
+	if(selectMemNo != selectRealMemNo){
 	$.getJSON(
 			"http://localhost:2000/getThumb?callback=?&memNo="+ selectMemNo ,
 			function (result) {
+				
 				console.dir(result);
 				var path = result.memPicPath;
+				console.log(result.name);
 				path = path.replace(".jpg", "_mini.jpg");
-				$(".thumb_"+ selectIndex).html("<img src='"+path+"'/>");
+				$("#thumb_"+ selectIndex).html("<img src='"+path+"'/><h2>"+result.name+"</h2>");
+				
+				
 			}
 		);
+	}
 	
 	if(contentFlag){
 		$("#pic"+selectIndex).css({				
@@ -694,6 +702,62 @@ function setMarkers(map, locations,date,content){
 	});
 	
 	
+}
+
+function selectPicView(){
+	$("#toggleView").toggleClass("selectView");
+	var viewMsg="";
+	var detailMsg="";
+	if(call=="me"){
+		viewMessage = "가족사진을 보겠습니다.";
+		detailMsg = " 제 사진을 포함한 모든 사진을 보겠습니다."
+	}else{
+		viewMessage = "나의 사진만 보겠습니다.";
+		detailMsg = " 가족사진을 제외한 나의 사진만 보겠습니다.";
+	}
+	
+	swal({   
+		title: viewMsg,   
+		text: detailMsg,   
+		type: "warning",   showCancelButton: true,   
+		confirmButtonColor: "#7D5DFF",   
+		confirmButtonText: "네 보겠습니다!",   
+		closeOnConfirm: false 
+		}, 
+			function(){ 
+				swal({   
+					title: "<span style='color:#7D5DFF'> 사진보기방식이 변경됩니다.</span>",   
+					imageUrl: "../images/slide/success.jpg",
+					timer:1000,
+					html:true,
+					showConfirmButton: false 
+				});
+			
+			if($("#toggleView").hasClass("selectView")){
+				call="fam";
+				
+				y_space = 30,z_space = 50;
+				translate_y = y_space * -1;
+				translate_z = z_space * -1;
+				html="";
+				realFlag=false;
+				
+				doubleStopFlag=true;
+				getList();
+			}else{
+				call="me";
+				
+				y_space = 30,z_space = 50;
+				translate_y = y_space * -1;
+				translate_z = z_space * -1;
+				html="";
+				realFlag=false;
+				
+				doubleStopFlag=true;
+				getList();
+			}
+		}
+	);
 }
 
 
