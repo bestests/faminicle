@@ -29,6 +29,7 @@ import chronicle.domain.EventDay;
 import chronicle.domain.Family;
 import chronicle.domain.LoginCheck;
 import chronicle.domain.Members;
+import chronicle.domain.Page;
 import chronicle.domain.Regist;
 import chronicle.service.ChronicleService;
 
@@ -42,9 +43,12 @@ public class ChronicleController {
 	private ServletContext servletContext;
 	
 	@RequestMapping("list.do")
-	public Map<String, Object> list (HttpServletRequest req) {
+	public Map<String, Object> list (Page page,HttpServletRequest req) {
 		Map<String, Object> result = new HashMap<>();
 		Members member = (Members)req.getSession().getAttribute("loginInfo");
+		
+		System.out.println("list.do에 타고 call값 : "+page.getCall());
+		page.setMemNo(member.getMemNo());
 		
 		String filePath = member.getMemPicPath();
 		if(filePath != null) {
@@ -52,16 +56,29 @@ public class ChronicleController {
 			filePath += "_mini.jpg";
 			member.setPicMiniFilePath(filePath);
 		}
+		
 		result.put("member", member);
 		result.put("eventDay", service.selectEvent(member.getMemNo()));
-		result.put("registList", service.selectList());
+		result.put("registList", service.selectList(page));
 		
 		return result;
 	}
 	
 	@RequestMapping("next.do")
-	public List<Regist> nextList(String startDate, int pageNo){
-		return service.selectNextList(startDate,pageNo);
+	public Map<String,Object> nextList(int pageNo,String startDate,String call,HttpServletRequest req){
+		
+		Page page = new Page(startDate,pageNo);
+		page.setCall(call);
+		// 자신의 정보값과 가족들과 비교하기 위하여 세션값 사용 ****
+		Members member = (Members)req.getSession().getAttribute("loginInfo");
+		page.setMemNo(member.getMemNo());
+		
+		List<Regist> list =service.selectNextList(page); 
+		Map<String, Object> result = new HashMap<>();
+		result.put("registList", list);
+		result.put("member", member);
+		
+		return result;
 	}
 //	@RequestMapping("prev.do")
 	

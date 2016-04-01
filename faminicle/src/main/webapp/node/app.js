@@ -38,10 +38,10 @@ app.get("/", (req, res) => {
 app.get("/checkId", (req, res) => {
 	var reqId    = req.param("chkId");
 	var callback = req.param("callback");
-	
+
 	pool.getConnection(function(err,connection){
        connection.query(
-		   'select * from fam_member where id =' + mysql.escape(reqId), 
+		   'select * from fam_member where id =' + mysql.escape(reqId),
 		   function (err, rows) {
 	           if(err){
 	               connection.release();
@@ -49,19 +49,45 @@ app.get("/checkId", (req, res) => {
 	           }
 	           console.log(rows);
 	           if(rows.length == 1) {
-	        	  res.send(callback + 
-	        			   "({result: '" + rows[0].ID + 
-	        			   "', thumbPic: '" + rows[0].MEM_PIC_PATH + 
-	        			   "', resIdNo: '" + rows[0].MEM_NO + "'})"); 
+	        	  res.send(callback +
+	        			   "({result: '" + rows[0].ID +
+	        			   "', thumbPic: '" + rows[0].MEM_PIC_PATH +
+	        			   "', resIdNo: '" + rows[0].MEM_NO + "'})");
 	           } else {
 	        	   res.send(callback + "({result: '해당 아이디가 존재하지 않습니다.'})");
 	           }
-	          
+
 	           connection.release();
 	       }
        );
    });
 });
+//가족 썸네일 가져오기
+app.get("/getThumb",function (req,res){
+  var memNo = req.param("memNo");
+  console.log(memNo+"  Thumb요청옴");
+  var callback = req.param("callback");
+  pool.getConnection(function(err, connection) {
+    connection.query(
+      "select NAME,MEM_PIC_PATH from FAM_MEMBER where MEM_NO = " +mysql.escape(memNo),
+      function(err, rows) {
+        if(!err) {
+          console.log(rows)
+          console.log("Query success!!");
+          res.send(callback +
+               "({name:'" + rows[0].NAME + "', memPicPath: '" + rows[0].MEM_PIC_PATH + "'})");
+        } else {
+          console.log(err);
+          connection.release();
+        }
+      }
+    );
+    connection.release();
+  });
+
+});
+
+
 
 // 가족 신청
 app.get("/reqFam", (req, res) => {
@@ -71,7 +97,7 @@ app.get("/reqFam", (req, res) => {
 	var resIdNo  = req.param("resIdNo");
 	var famName  = req.param("famName");
 	var callback = req.param("callback");
-	
+
 	pool.getConnection((err, connection) => {
 		connection.query(
 			"INSERT INTO FAM_REQUEST(FAM_REQ_ID_NO, FAM_RES_ID_NO, FAM_NAME)" +
@@ -79,11 +105,11 @@ app.get("/reqFam", (req, res) => {
 			(err, rows) => {
 				if(!err) {
 					console.log("Query success!!");
-					res.send(callback + 
-							 "({ reqId:'"   + reqId   + 
-							 "', resId:'"   + resId   + 
-							 "', famName:'" + famName + 
-							 "', reqIdNo:'" + reqIdNo + 
+					res.send(callback +
+							 "({ reqId:'"   + reqId   +
+							 "', resId:'"   + resId   +
+							 "', famName:'" + famName +
+							 "', reqIdNo:'" + reqIdNo +
 							 "', resIdNo:'" + resIdNo + "'})");
 				} else {
 					console.log(err);
@@ -92,10 +118,10 @@ app.get("/reqFam", (req, res) => {
 			}
 		);
 		connection.release();
-	}); 
+	});
 });
 
-// 
+//
 
 io.sockets.on("connection", function (socket) {
 	socket.on("reqFam", (data) => {

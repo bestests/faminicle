@@ -189,7 +189,7 @@ time.icon span
  	
  	transition:.5s ease-out;
 }
-.leftContent{
+.leftContent , .leftContentFam{
 	position:relative;
 	transition: .7s ease-out;
 /* 	background-color: rgba(64,255,0,0.8); */
@@ -205,6 +205,9 @@ time.icon span
 	height:100%;
 	z-index: 3;
 }
+/* .leftContentFam{ */
+/* 	background-color: 	rgba(1,116,223,0.8); */
+/* } */
 p{
 	position:relative;
 	top:10%;

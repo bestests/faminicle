@@ -6,11 +6,12 @@ import chronicle.domain.EventDay;
 import chronicle.domain.Family;
 import chronicle.domain.LoginCheck;
 import chronicle.domain.Members;
+import chronicle.domain.Page;
 import chronicle.domain.Regist;
 
 public interface ChronicleService {
-	public List<Regist> selectList();
-	public List<Regist> selectNextList(String startDate,int pageNo);
+	public List<Regist> selectList(Page page);
+	public List<Regist> selectNextList(Page page);
 	public void registMember(Members members);
 	public Integer checkId(Members members);
 	public Members loginCheck(LoginCheck loginInfo);

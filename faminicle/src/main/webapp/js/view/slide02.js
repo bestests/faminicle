@@ -7,6 +7,7 @@ var controlStatus = true;
 var slideShow=false;
 var slide;
 var mapView=false;
+var slideSpeed = false;
 
 //selete Content
 var selectDate;
@@ -15,6 +16,7 @@ var selectNo;
 var selectXpoint;
 var selectYpoint;
 var selectIndex;
+var selectMemNo;
 
 
 
@@ -29,6 +31,8 @@ var realFlag=false;
 var doubleStopFlag=false;// 다음페이지,이전페이지 중복 방지
 //slideEvent
 var html="";
+var call="fam";
+//var famStyle='style="background-color: rgba(1,116,223,0.8);"';
 
 getList();
 
@@ -41,14 +45,15 @@ function getList() {
 	
 	var root = contextRoot + "/chronicle/";
 	if(arguments.length != 0 ){
-			root += "next.do?pageNo=" + pageNo + "&startDate=" + arguments[1];
+			root += "next.do?pageNo=" + pageNo + "&startDate=" + arguments[1]+"&call="+call;
 	}else{
-		root += "list.do";
+		root += "list.do?call="+call;
 	}
 	
 	console.log("현재 페이지번호2 : "+pageNo);
 	
 	$.getJSON(root,function(result){
+		console.log(result);
 		
 		if(result.registList.length==0 ||startNo == result.registList[0].picNo){
 			//수정해야함.
@@ -86,14 +91,22 @@ function getList() {
 			+'			<img id="'+i+'" src="'+ result.registList[i].picFilePath+'"/>                                            '
 			+'		</div>                                                                             '
 			+'	                                                                                       '
-			+'		<div class="imgContent" id="pic'+i+'">                                                 '
-			+'			<div class="leftContent" >                                                      '
-			+'				<p class="imgDate'+i+'">'+ result.registList[i].regDate + '</p>                                        '
+			+'		<div class="imgContent" id="pic'+i+'">                                                 ';
+			
+			if(result.member.memNo!=result.registList[i].memNo){
+				html +='			<div class="leftContent" id="content_'+i+'" style="background-color:rgba(1,116,223,0.8)">                                                      ';
+				
+			}else{
+			html +='			<div class="leftContent" id="content_'+i+'">                                                      ';
+			}
+			
+			html +='				<p class="imgDate'+i+'">'+ result.registList[i].regDate + '</p>                                        '
 			+'				<p class="imgTitle'+i+'">'+ result.registList[i].title +'</p>                                           '
 			+'				<input type="hidden" id="mId" value="'+result.registList[i].picNo+'" />                                                     '
 			+'				<input type="hidden" id="xPoint" value="'+result.registList[i].lat+'"/>                                                     '
 			+'				<input type="hidden" id="yPoint" value="'+result.registList[i].lng+'" />                                                     '
-			+'				                                                                           '
+			+'				<input type="hidden" id="mNo" value="'+result.registList[i].memNo+'" />                                                     '
+			+'				<p class="thumb_'+i+'"></p>                                                                  '
 			+'				<div class="imgIcon">                                                      '
 			+'					<button id="update" class="left"><img src="../images/slide/modify.png"/></button>'
 			+'					<button id="delete" class="left"><img src="../images/slide/delete.png"/></button>'
@@ -108,6 +121,9 @@ function getList() {
 			+'	</div>                                                                                 '
 			+'</li>																			   ';
 			
+			if(result.member.memNo!=result.registList[i].memNo){
+				$(".leftContent").css("background-color","rgba(1,116,223,0.8)");
+			}
 		}
 		$("#stack").append(html);
 		//시작 끝 데이터 가져온다(페이징 위해서)
@@ -138,6 +154,8 @@ function getList() {
 							transform: "scale(1.3)"
 							});
 		}
+		// me fam 에따른 css 색깔 변경
+//		console.log(result.member.memNo==result.registList[i].memNo)
 		
 		
 		}
@@ -171,26 +189,39 @@ function imgDown(event) {
 	
 	var $this = $(this).siblings($(".imgContent")).children("div.leftContent");
 	
+	
 	selectIndex = $(event.target).attr("id");
 	selectDate = $this.children(":eq(0)").html();
 	selectContent = $this.children(":eq(1)").html();
 	selectNo = $this.children(":eq(2)").val();
 	selectXpoint = $this.children(":eq(3)").val();
 	selectYpoint = $this.children(":eq(4)").val();
+	selectMemNo = $this.children(":eq(5)").val();
 	
+	console.log(selectIndex);
 	console.log(selectDate);
-	console.log(selectXpoint);
+	console.log(selectContent);
 	console.log(selectNo);
+	console.log(selectXpoint);
+	console.log(selectYpoint);
+	console.log(selectMemNo);
 	
+	
+	$.getJSON(
+			"http://localhost:2000/getThumb?callback=?&memNo="+ selectMemNo ,
+			function (result) {
+				console.dir(result);
+				var path = result.memPicPath;
+				path = path.replace(".jpg", "_mini.jpg");
+				$(".thumb_"+ selectIndex).html("<img src='"+path+"'/>");
+			}
+		);
 	
 	if(contentFlag){
 		$("#pic"+selectIndex).css({				
 			opacity:"1",
 			top:"0"
 		});		
-		
-		
-		
 		contentFlag=false;
 	}
 }
@@ -369,7 +400,10 @@ function slideEvent(event) {
 					});
 	
 	controlStatus = false;
-	slide = setInterval(showImg, $("#speed").val() * 1000);
+	if(!slideSpeed){
+		slide = setInterval(showImg, $("#speed").val() * 1000);
+		slideSpeed=true;
+	}
 	
 	event.stopPropagation();
 }
@@ -403,6 +437,7 @@ function stopSlide() {
 			
 			
 			$(".container").removeAttr("style");
+			slideSpeed=false;
 		}
 	}
 }

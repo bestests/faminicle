@@ -36,9 +36,22 @@
 	
 	<select id="selectList" resultMap="picMap">
 		select *
-		  from fam_pic
-		 order by pic_date desc
-		 limit 24
+			from fam_pic
+			where mem_no 
+	    <choose>
+	      <when test="call == 'fam'">
+					in (select mem_no
+						  from family
+						  where fam_name in (select fam_name
+											  from family
+											  where mem_no= #{memNo}
+									      	 )
+						)
+		  </when>
+	      <otherwise>= #{memNo}</otherwise>
+	    </choose>	
+			order by pic_date desc
+			limit 24
 	</select>
 	<select id="selectPrevList" parameterType="page" resultMap="picMap">
 		select t1.*
@@ -48,6 +61,19 @@
 				  		select *
 				  		  from fam_pic
 				  		 where pic_date >= #{startDate}
+				  		 		and mem_no
+				  		  <choose>
+						     <when test="call == 'fam'">
+								in (select mem_no
+									  from family
+									  where fam_name in (select fam_name
+														  from family
+														  where mem_no= #{memNo}
+												      	 )
+									)
+	 						 </when>
+	 						 <otherwise>= #{memNo}</otherwise>
+						   </choose>						
 				  		 order by pic_date asc
 		  		  		)as t
 		  		  where pic_no > #{pageNo} 	
@@ -61,9 +87,22 @@
 			from (
 				select t.* 
 				  from (
-						select * 
+						    select * 
 							from fam_pic 
 							where pic_date  <![CDATA[<=]]> #{startDate}
+								   and mem_no 
+						   <choose>
+						     <when test="call == 'fam'">
+								in (select mem_no
+									  from family
+									  where fam_name in (select fam_name
+														  from family
+														  where mem_no= #{memNo}
+												      	 )
+									)
+	 						 </when>
+	 						 <otherwise>= #{memNo}</otherwise>
+						   </choose>						
 							order by pic_date desc
 						)as t 
 				limit #{pageNo} , 24
