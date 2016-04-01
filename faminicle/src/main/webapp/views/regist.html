@@ -35,17 +35,19 @@
 	}
    #image{
         width:25%;
-        height: 80%; 
+        height: 100%; 
         overflow: auto;
         text-align: center;
         padding-top: 10px;
     	overflow: auto;
+    	border-right: 1px solid black;
+    	padding-right: 5px;
    }
     #image img{
     	display: inline;
     	overflow: hidden;
     	float: right;
-    	margin: 1%;
+    	margin: 5%;
     	border: 1px solid green;
     }
     #image>img:first-child {
@@ -78,7 +80,7 @@
 		height: 25%;
 		position: absolute;
 		top: 20%;
-		left: 25%;
+		left: 35%;
 		border-radius: 15%;
    }
     #in {
@@ -140,10 +142,6 @@
  	}
  	#datepicker{
  		z-index:1;
- 	}
- 	#image img{
- 		width: 40%;
- 		height: 10%;
  	}
 </style>
 <script src = "http://maps.googleapis.com/maps/api/js"></script>
@@ -235,7 +233,7 @@
 		var image = document.getElementById(indexImg);
 		if(execute){
 		$("#image").prepend(image);
-		$("#image img").css({ width: "40%", height: "20%" })
+		$("#image img").css({ width: "38%", height: "14%" })
 		$("#upload").show();
 		registPic();
 		index++;
