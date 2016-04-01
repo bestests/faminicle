@@ -28,7 +28,7 @@ body, html{
 	background: rgba(255,255,255,0);
 	top: 1%;
 }
-#date {
+#date{
 	width: 30%;
 	height: 30%;
 	text-align: center;
@@ -46,14 +46,22 @@ body, html{
 #date:hover{
 	background: rgba(0,0,0,0.6);
 }
-#date > img {
+#image > img {
 	width: 50px;
 	height: 50px;
 	margin: 5px;
 	border: 2px solid white;
 }
+#noimage > img{
+	width: 100px;
+	height: 100px;
+}
+#image,#noimage{
+	position: relative;
+	top:-95%;
+}
 #tabline{
-	width: 89%;
+	width: 100%;
 	height: 100%;
 	background: #865555;
 	display: inline-block;
@@ -64,7 +72,7 @@ body, html{
 	left: 0;
 	width: 1000%;
 	height: 100%;
-	background: #865555;	
+	background: #807676;	
 	padding: 0px;
 }
 #tab > div {
@@ -96,8 +104,6 @@ body, html{
 }
 .page {
 	height: 100%;
-	margin: auto;
-	
 }
 #back{
 	width: 100px;
@@ -128,6 +134,8 @@ body, html{
 	top: 23%;
 	text-align: center;
 	border: 1px solid white;
+	border-radius: 10px;
+	overflow: hidden;
 }
 #menu > div {
 	height: 81px;
@@ -151,6 +159,15 @@ body, html{
 	border: 2px solid black;
 	
 }
+#opadiv{
+	background:red;
+	width: 100%;
+	height:100%;
+	position: relative;
+	top: -42px;
+	z-index:100;
+	opacity: 0;
+}
 
 </style>
 <link rel="stylesheet" href="../js/booklet/booklet/jquery.booklet.latest.css">
@@ -168,11 +185,10 @@ body, html{
 		var index = 0;
 		var index2 = 0;
 		var left = 0;
-		var count = 0;
+		var num = 0;
 		$.post(
 			contextRoot + "/chronicle/selectEvent.do",function(result){
 				var result = result.ajaxResult;
-				console.log(result.data);
 				for(var i in result.data) {
 					if(result.data[i].evEnd != '1000-01-01'){
 						html="<div class='tap'>"+result.data[i].evStart+" <br/>~ <br/>" +result.data[i].evEnd 
@@ -189,6 +205,9 @@ body, html{
 						+"<input type='hidden' name='evStart' value='"+result.data[i].evStart+"'>"
 						+"<input type='hidden' name='evEnd' value='"+result.data[i].evEnd+"'>"
 						+"</form>"
+						+"<div id='opadiv' class='"+[i]+"'/>"
+						+"<div id='image'/>"
+						+"<div id='noimage'/>"
 						+"</div>";
 						
 						$("#tab").append(html);
@@ -204,19 +223,26 @@ body, html{
 								evEnd: result.data[i].evEnd},	
 							function(result){
 								var result = result.ajaxResult
+								console.log(result.data);
+								if(result.data[0]){
 								for(var k in result.data) {
 									var picFilePath = result.data[k].picFilePath.substring(0, result.data[k].picFilePath.lastIndexOf("."));
 									picFilePath += "_mini.jpg";
 									html="<img src='"+picFilePath+"'/>";
-									$(".date"+index).append(html);
+									$(".date"+index+"> #image").append(html);
 									index2++;
 									if(index2 == result.data.length){index++; index2 = 0;};
+								}}else{
+									html="<img src='../images/slide/014.gif'>";
+									html+="<h1>사진이 없습니다</h1>";
+									$(".date"+index+"> #noimage").append(html);
 								}
 							},"json"
 					);
 					
 				}
 				if($("#tab").children().length > 10){
+					$("#tabline").css({width:'89%'});
 					$("#prev, #next").css({display:'inline-block'});
 				}
 			},"json"
@@ -228,25 +254,28 @@ body, html{
 			
 		});
 		$("#next").click(function(){
-			if($("#tab").children().length-10 > count){
+			if($("#tab").children().length-10 > num){
 			 left += -10;
 			$("#tab").css({left:''+left+'%'});
-			 count++;
+			num++;
 			}else{
 				swal({   title: "마지막 탭입니다.",   timer: 1000,   showConfirmButton: false, type: "warning" });
 			}
 		});
 		$("#prev").click(function(){
-			if(count != 0){
+			if(num != 0){
 			 left += 10;
 			$("#tab").css({left:''+left+'%'});
-			 count--;
+			num--;
 			}else{
 				swal({   title: "처음 탭입니다.",   timer: 1000,   showConfirmButton: false, type: "warning" });
 			}
 		});
+// 		$("#book").click(function(event){
+// 			location.href="album.html"
+// 		})
 		
-		$("#tab").on('click',$(".tap"), function(event) {
+		$("#tab").on('click',".tap", function(event) {
 			var form = $(event.target).children()[2];
 			var formData = new FormData(form);
 			$.ajax({
@@ -283,18 +312,18 @@ body, html{
 					}
 					$("#book").append(html);
 					$('#book').booklet({
+						height: '88%',
+				    	width: '86%',
 				    	pagePadding: 10
 				    });
 				},dataType:"json"}
 			);
-			$("#tab div").css({background:'white','border-bottom-style': 'solid',color:'black'})
-			$(event.target).css({background:'sky-blue',color:'white',background:'maroon'})
-			$("#tab").css({background:'white'});
+			$("#tab div").css({background:'#CFF69B',color:'black'})
+			$(event.target).css({color:'white',background:'maroon'})
 		});
 		
-		$("#book").on('click',$("#date"), function(event) {
-			console.log(this)
-			var form = ($(event.target).children("form"));
+		$("#book").on('click',"#opadiv", function(event) {
+			var form = ($(event.target).prev("form"));
 			form.children("[name='evStart']").val();
 			$.post(
 				contextRoot + "/chronicle/seletePicByEvent.do",
@@ -329,9 +358,18 @@ body, html{
 					$("#book").append(html);
 					$('#book').booklet({
 				    	height: '88%',
-				    	width: '99%',
+				    	width: '86%',
 				    	pagePadding: 10
 				    });
+					console.log($(event.target).attr('class'));
+					$("#tab").children(":eq("+$(event.target).attr('class')+")").css({color:'white',background:'maroon'});
+					
+					if($(event.target).attr('class') > 9){
+						left = ($(event.target).attr('class') - 9)*-10;
+						console.log(left);
+						$("#tab").css({left:''+left+'%'});
+						num += $(event.target).attr('class') - 9;
+					}
 				},"json"
 			);
 		});
@@ -350,7 +388,7 @@ body, html{
 					$.getJSON(
 						contextRoot + "/chronicle/logout.do",
 						function(result) {
-							location.href="main5.html";
+							location.href="login.html";
 						}
 					)
 					swal({   title: "로그 아웃",   
