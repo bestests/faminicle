@@ -22,15 +22,13 @@ public class ChronicleServiceImpl implements ChronicleService{
 	ChronicleDAO dao;
 	
 	@Override
-	public List<Regist> selectList() {
-		return dao.selectList();
+	public List<Regist> selectList(Page page) {
+		return dao.selectList(page);
 	}
 	
 	@Override
-	public List<Regist> selectNextList(String startDate,int pageNo) {
-		Page page = new Page(startDate,pageNo);
-		System.out.println(page.getStartDate());
-		System.out.println(page.getPageNo());
+	public List<Regist> selectNextList(Page page) {
+		System.out.println("형식:"+page.getCall()+"페이지번호:"+page.getPageNo()+"시작일자:"+page.getStartDate()+"회원번호:"+page.getMemNo());
 		return dao.selectNextList(page);
 	}
 

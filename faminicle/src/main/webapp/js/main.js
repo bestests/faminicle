@@ -1,10 +1,12 @@
 	var startDate;
 	var pageNo=1;
+	var call = "me";
+	
  	// Create a DataSet (allows two way data-binding)
 	var items = new vis.DataSet([]);
-	$(function () {
+	$(function () {  
 	 	var html = "";
-		$.getJSON(contextRoot + "/chronicle/list.do", function (result) {
+		$.getJSON(contextRoot + "/chronicle/list.do?call=" + call, function (result) {
 			console.dir(result);
 			for(var i in result.registList) {	
 				html += "<div class='box'>"
@@ -44,14 +46,10 @@
 			location.href="login.html";
 			
 		});
+		
+		
 		init_masonry();
 		
-//		=============================================작업중
-//		$("#infoId").on('modal fade in', function () {
-//			$.getJSON(contextRoot + "/chronicle/list.do", function (result) {
-//				$("#thumbnail").attr("src",result.member.picMiniFilePath);
-//			});
-//		}) ;
 		var menuStatus = false;
 		$("#menu").click(function (event) {
 			if(!menuStatus) {
@@ -101,7 +99,6 @@
 				submenuStatus = false;
 				$(".main-3d").show();
 			}
-			
 		});
 		var submenuStatus = false;
 		$("#toggleBox").click(function (event) {
@@ -287,7 +284,7 @@
 		$("#passchkLabel").html("현재 비밀번호");
 		$("#pass, #pass2, [name='eMail'], #tel").attr("readonly", true);
 		$.getJSON(contextRoot + "/chronicle/list.do", function (result) {
-			$("#thumbnail").attr("src",result.member.picMiniFilePath);
+		 	$("#thumbnail").attr("src",result.member.picMiniFilePath);
 		});
 	})
 	
@@ -615,15 +612,9 @@
 				holder.innerHTML = '';
 				holder.appendChild(img);
 				
-				
 				updateMemberPic(file);
-				
 			};
 			reader.readAsDataURL(file);
-			$.getJSON(contextRoot + "/chronicle/list.do", function (result) {
-				$("#thumbnail").attr("src",result.member.picMiniFilePath);
-			});
-			
 			return false;
 		};	 
 		
@@ -634,8 +625,7 @@
 		 
 		 $('#update').prop('target', 'upload_target');
          $('#update').prop('action', contextRoot + '/chronicle/updateMemberPic.do');
-         $('#update').submit();   
-        
+         $('#update').submit();          
 
 // 		 var formData = new FormData(form); 
 // 		 console.dir(formData);
@@ -705,7 +695,6 @@
 	    // onchange
 	    $(this).change(function(){
 	        previewImage();
-	        
 	    });
 	};
 		 
@@ -768,7 +757,6 @@
 		  }                      
 		  
 		  dropImage.addEventListener("load", function(e) {
-			  
 			 // $("dropImage > img").css({ width: "200px" , height: "auto"}); 
 		  }, true);          
 			  	
@@ -786,8 +774,6 @@
 			    reader.onload = function  () {
 			        //로컬 이미지를 보여주기
 			        document.querySelector("#modalImgDrop").src = reader.result;
-			        
-			        
 			/*
 			        //썸네일 이미지 생성
 			        var tempImage = new Image(); //drawImage 메서드에 넣기 위해 이미지 객체화
