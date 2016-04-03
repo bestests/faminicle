@@ -225,17 +225,20 @@ body, html{
 								var result = result.ajaxResult
 								console.log(result.data);
 								if(result.data[0]){
-								for(var k in result.data) {
-									var picFilePath = result.data[k].picFilePath.substring(0, result.data[k].picFilePath.lastIndexOf("."));
-									picFilePath += "_mini.jpg";
-									html="<img src='"+picFilePath+"'/>";
-									$(".date"+index+"> #image").append(html);
-									index2++;
-									if(index2 == result.data.length){index++; index2 = 0;};
-								}}else{
+									for(var k in result.data) {
+										var picFilePath = result.data[k].picFilePath.substring(0, result.data[k].picFilePath.lastIndexOf("."));
+										picFilePath += "_mini.jpg";
+										html="<img src='"+picFilePath+"'/>";
+										$(".date"+index+"> #image").append(html);
+										index2++;
+										if(index2 == result.data.length){index++; index2 = 0;};
+									}
+								}else{
 									html="<img src='../images/slide/014.gif'>";
 									html+="<h1>사진이 없습니다</h1>";
+									console.log(index);
 									$(".date"+index+"> #noimage").append(html);
+									index++;
 								}
 							},"json"
 					);

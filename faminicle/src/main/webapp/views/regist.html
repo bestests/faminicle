@@ -101,12 +101,15 @@
     }   
     #addr{
     	width: 34%;
+    	height: 10%;
     	position: absolute;
  		right: 7%;
- 		bottom:40%;
+ 		bottom:33%;
+ 		display: none;
     }
     #addr1{
     	width: 109%;
+    	height: 35%;
     }
     
     #check {
@@ -152,8 +155,7 @@
 	var flagequal=false;
 	var execute = false;
 	$(function () {
-		$("#map_canvas").hide(2000);
-    	$("#addr").hide(2000);
+		$("#map_canvas").hide();
 		dropBox = document.getElementById("droppic");
 	    $("#datepicker").datepicker({
 	    	altField: ".datedata",
@@ -171,7 +173,12 @@
 	    	$("#map").attr("src","../images/지도.png")
 	    	flagMap=true;
     	}else {
-    		$("#map_canvas").show("slow");
+    		$("#map_canvas").show();
+    		google.maps.event.trigger(map, 'resize');
+    		if($("#lat").val()){
+	    		var darwin = new google.maps.LatLng($("#lat").val(), $("#lng").val()); 
+	    		map.setCenter(darwin); 
+    		}
     		$("#addr").show("slow");
     		$("#datepicker").hide("slow");
     		$("#map").attr("src","../images/달력.jpg")
@@ -260,7 +267,7 @@
 		latlng = new google.maps.LatLng(lat, lng);
 	}
 	 var myOptions = {
-	  zoom: 15,
+	  zoom: 13,
 	  center:latlng,
 	  streetViewControl: false, 
 	  mapTypeControl: false, 
@@ -396,7 +403,7 @@ function registPic(){
 			<img id="back" title="메인으로 가기" src="../images/back1.jpg" onclick="location.href='main.html'">
 			<div id="datepicker"></div>
 			<div id="map_canvas"></div>
-			<p id="addr"><input class="form-control" type="text" id="addr1" placeholder="search" name="address" onkeyup='codeAddress(); return false;'/></p>
+			<p id="addr"><input class="form-control" type="text" id="addr1" placeholder="장소 검색" name="address" onkeyup='codeAddress(); return false;'/></p>
 		</div>
 		</form>
 	</div>
