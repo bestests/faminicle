@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import chronicle.dao.ChronicleDAO;
 import chronicle.domain.EventDay;
+import chronicle.domain.FamMember;
 import chronicle.domain.Family;
 import chronicle.domain.LoginCheck;
 import chronicle.domain.Members;
@@ -119,11 +120,32 @@ public class ChronicleServiceImpl implements ChronicleService{
 
 	@Override
 	public void registFam(Family fam) {
-		String famName = picFamName(fam.getFamName());
+		String famName = fam.getFamName();
+		if(famName.indexOf("#") == -1) {
+			famName = picFamName(fam.getFamName());
+		}
 		
 		System.out.println("처리 후 : " +famName);
 		
 		fam.setFamName(famName);
+		
+		int cnt = dao.selectFamReq(fam.getFamReqIdNo());
+		
+		if(cnt == 0) {
+			FamMember famMem = new FamMember();
+			famMem.setFamName(famName);
+			famMem.setMemNo(fam.getFamReqIdNo());
+			famMem.setRequestor("Y");
+			
+			dao.insertFamMember(famMem);
+		}
+		
+		FamMember famMem = new FamMember();
+		famMem.setFamName(famName);
+		famMem.setMemNo(fam.getFamResIdNo());
+		
+		dao.insertFamMember(famMem);
+		
 		System.out.println(fam.getFamName());
 		System.out.println("reqNo : " + fam.getFamReqIdNo());
 		System.out.println("resNo : " + fam.getFamResIdNo());
@@ -132,6 +154,12 @@ public class ChronicleServiceImpl implements ChronicleService{
 		System.out.println("가족 신청 완료");
 	}
 	
+	
+	@Override
+	public FamMember selectFam(int memNo) {
+		return dao.selectfam(memNo);
+	}
+
 	public String picFamName(String famName) {
 		while (true) {
 			int index = famName.lastIndexOf("#");

@@ -58,6 +58,7 @@ public class ChronicleController {
 			member.setPicMiniFilePath(filePath);
 		}
 		
+		result.put("family", service.selectFam(member.getMemNo()));
 		result.put("member", member);
 		result.put("eventDay", service.selectEvent(member.getMemNo()));
 		result.put("registList", service.selectList(page));
@@ -83,15 +84,14 @@ public class ChronicleController {
 	}
 	
 	@RequestMapping("prev.do")
-	public Map<String,Object> prevList(int pageNo, String startDate, String call, HttpServletRequest req){
-		
-		Page page = new Page(startDate,pageNo);
-		page.setCall(call);
+	public Map<String,Object> prevList(Page page, HttpServletRequest req){
+		System.out.println("prev call : " + page.getCall());
+		System.out.println("prev startDate : " + page.getStartDate());
 		// 자신의 정보값과 가족들과 비교하기 위하여 세션값 사용 ****
 		Members member = (Members)req.getSession().getAttribute("loginInfo");
 		page.setMemNo(member.getMemNo());
 		
-		List<Regist> list =service.selectNextList(page); 
+		List<Regist> list =service.selectPrevList(page); 
 		Map<String, Object> result = new HashMap<>();
 		result.put("registList", list);
 		result.put("member", member);

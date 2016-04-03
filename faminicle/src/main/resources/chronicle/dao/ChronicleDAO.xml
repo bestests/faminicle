@@ -34,10 +34,16 @@
 		<result column="tel" property="tel" />
 	</resultMap>
 	
+	<resultMap type="famMember" id="famMemberMap">
+		<result column="fam_name" property="famName" />
+		<result column="mem_no" property="memNo" />
+		<result column="requestor" property="requestor" />
+	</resultMap>
+	
 	<select id="selectList" resultMap="picMap">
 		select *
-			from fam_pic
-			where mem_no 
+	      from fam_pic
+		 where mem_no 
 	    <choose>
 	      <when test="call == 'fam'">
 					in (select mem_no
@@ -45,41 +51,50 @@
 						  where fam_name in (select fam_name
 											  from family
 											  where mem_no= #{memNo}
+											  <if test="startDate != null">
+											  	and pic_date <![CDATA[<=]]> #{startDate}
+											  order by pic_date 	
+											  </if>
 									      	 )
 						)
 		  </when>
-	      <otherwise>= #{memNo}</otherwise>
-	    </choose>	
+	      <otherwise>
+	      	= #{memNo}
+	      	<if test="startDate != null">
+		  	  and pic_date <![CDATA[<=]]> #{startDate}
+		    </if>	
+	      </otherwise>
+	    </choose>
+	    	
 			order by pic_date desc
 			limit 24
 	</select>
 	<select id="selectPrevList" parameterType="page" resultMap="picMap">
-		select t1.*
+		select t.*
 		  from (
-		  		select t.* 
-		  		  from (
-				  		select *
-				  		  from fam_pic
-				  		 where pic_date >= #{startDate}
-				  		 		and mem_no
-				  		  <choose>
-						     <when test="call == 'fam'">
-								in (select mem_no
-									  from family
-									  where fam_name in (select fam_name
-														  from family
-														  where mem_no= #{memNo}
-												      	 )
-									)
-	 						 </when>
-	 						 <otherwise>= #{memNo}</otherwise>
-						   </choose>						
-				  		 order by pic_date asc
-		  		  		)as t
-		  		  where pic_no > #{pageNo} 	
-		  		  limit 24	
-		  		)as t1
-		 order by pic_date desc  		
+			select * 
+			  from fam_pic 
+			 where pic_date > #{startDate} 
+			   and mem_no
+			   <choose>
+			   		<when test="call == 'fam'">
+			   			in (
+			   					select mem_no
+			   					  from family
+			   					 where fam_name in (
+			   					 						select fam_name
+			   					 						  from family
+			   					 						 where mem_no = #{memNo} 
+			   					 					) 
+			   				)
+			   		</when>
+			   		<otherwise>
+			   			= #{memNo}
+			   		</otherwise>
+			   </choose>
+			 limit 24
+			)as t
+		 order by pic_date desc;		
 	</select>
 	
 	<select id="selectNextList" parameterType="page" resultMap="picMap">
@@ -136,7 +151,9 @@
 			order by PIC_DATE
 	</select>
 	
-	<!-- 회원 관련 쿼리  -->
+	<!-- 
+		회원 관련 쿼리  
+	-->
 	<select id="loginCheck" parameterType="LoginCheck" resultMap="loginMap">
 		select *
 		from fam_member
@@ -170,7 +187,9 @@
 	</update>
 	
 
-	<!-- 기념일 설정 쿼리  -->
+	<!-- 
+		기념일 설정 쿼리 
+	 -->
 	
 	<!-- member 번호로 기념일 조회 -->
 	<select id="selectEventByMem" parameterType="int" resultMap="eventdayMap">
@@ -211,6 +230,16 @@
 		where pic_no = #{picNo}
 	</delete>
 	
+	<!-- 
+		가족 관련 쿼리
+	 -->
+	<!-- 자신이 속한 가족이름 조회 -->
+	<select id="selectfam" parameterType="int" resultMap="famMemberMap">
+		select *
+		  from family
+		 where mem_no = #{memNo} 
+	</select>
+	
 	<!-- 가족 이름 중복 체크  -->
 	<select id="selectFamByName" parameterType="string" resultType="int">
 		select count(*)
@@ -225,4 +254,26 @@
   	     where fam_req_id_no = #{famReqIdNo}
   	       and fam_res_id_no = #{famResIdNo}
 	</update>
+	
+	<!-- 신청자 가입 여부 확인 -->
+	<select id="selectFamReq" parameterType="int" resultType="int">
+		select count(*)
+		  from fam_request
+		 where fam_req_id_no = #{memNo}
+		   and fam_status = 'Y' 
+	</select>
+	
+	<!-- 가족 맴버 등록  -->
+	<insert id="insertFamMember" parameterType="famMember">
+	<choose>
+		<when test="requestor != null">
+			insert into family(fam_name, mem_no, requestor)
+			values(#{famName}, #{memNo}, #{requestor})
+		</when>
+		<otherwise>
+			insert into family(fam_name, mem_no)
+			values(#{famName}, #{memNo})
+		</otherwise>
+	</choose>
+	</insert>
 </mapper>

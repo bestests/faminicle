@@ -3,6 +3,7 @@ package chronicle.dao;
 import java.util.List;
 
 import chronicle.domain.EventDay;
+import chronicle.domain.FamMember;
 import chronicle.domain.Family;
 import chronicle.domain.LoginCheck;
 import chronicle.domain.Members;
@@ -31,4 +32,7 @@ public interface ChronicleDAO {
 	public List<Regist> seletePicByEvent(EventDay evDay);
 	public void updateFamAfterAccept(Family fam);
 	public int selectFamByName(String famName);
+	public FamMember selectfam(int memNo);
+	public int selectFamReq(int memNo);
+	public void insertFamMember(FamMember famMem);
 }
