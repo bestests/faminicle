@@ -365,13 +365,17 @@ iframe{
     line-height: 450%;
 }
 
+
 /*  #footer >div:hover {  */
+/*
 #main:hover, #regist:hover, #album:hover, .prev:hover, #play:hover, .next:hover, #logOut:hover, #family:hover {
+	border: 1px solid grey;
 	background: lightblue;
    	border-radius: 20px;
 	color: black;
 	transition: .3s;	
 }
+*/
 
 /* 슬라이드 하위 메뉴 */
 

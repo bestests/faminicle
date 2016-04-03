@@ -1,7 +1,6 @@
 	var startDate;
-	var startNo;
 	var pageNo=1;
-	var call = "fam";
+	var call = "me";
 	
  	// Create a DataSet (allows two way data-binding)
 	var items = new vis.DataSet([]);
@@ -27,11 +26,8 @@
 					items.add({id: result.eventDay[j].evNo, content: result.eventDay[j].evTitle, start: result.eventDay[j].evStart, end: result.eventDay[j].evEnd});
 				}
 			}
-			if(result.registList.length != 0) {
-				startDate = result.registList[0].regDate;
-				startNo   = result.registList[0].picNo;
-				console.log(startNo);
-			}
+			
+			startDate = result.registList[0].regDate;
 			
 			$("#hiddenMemNo").val(result.member.memNo);
 			$("#infoId").html(result.member.name + " 님");
@@ -41,7 +37,7 @@
 				$("#thumbnail").attr("src",result.member.picMiniFilePath);
 			}
 			$("#content").append(html);
-			init_masonry();
+			
 			pageNo++;
 		}).fail(function () {
 			swal({   title: "로그인 해주세요!! ^^",   
@@ -52,7 +48,7 @@
 		});
 		
 		
-//		init_masonry();
+		init_masonry();
 		
 		var menuStatus = false;
 		$("#menu").click(function (event) {
@@ -138,7 +134,11 @@
 			$("#file").click();
 		})
 		
-		/* info modal */
+//			$(document).ready(function () {
+//				$("")
+//			})
+			
+	    /* info modal */
 		$("#infoId").on("click" , function (event) {
 			event.stopPropagation();
 			/* 비밀번호 초기화 작업 */ 
@@ -261,7 +261,6 @@
 			$container.masonry({
 				itemSelector: ".box"
 			});
-			$container.masonry("layout");
 		});
 	};
 	
@@ -347,20 +346,21 @@
 		console.log("item : " + props.item);
 		currDate = props.time;
 		currDate = currDate.getFullYear() + "-" + currDate.getMonth() + "-" + currDate.getDate();
-		console.log("currDate : " + currDate);
 //		timeline.moveTo(currDate);
 		$.getJSON(
 				
-				contextRoot + "/chronicle/list.do?call=" + call + "&startDate=" + currDate,
+				contextRoot + "/chronicle/list.do?pageNo=&startDate=" + currDate + "&endDate=",
 				function (result) {
-					console.dir(result);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 					var html = "";
+					console.dir(result.registList);
 					for(var i in result.registList) {	
+						if(maxNum < result.registList[i].picNo) maxNum = result.registList[i].picNo;
+						if(minNum > result.registList[i].picNo) minNum = result.registList[i].picNo;
 						html += "<div class='box'>"
-							  + "	<img src='" + result.registList[i].picFilePath + "' />"
+							  + "	<img src='" + result.registList[i].filePath + "' />"
 							  + "	<div class='detail' onselectstart='return false;'>"
 							  + "		<div class='detailDate'>" + result.registList[i].regDate + "</div>"
-							  + "		<div class='detailTitle'>" + result.registList[i].title + "</div>"
+							  + "		<div class='detailTitle'>" + result.registList[i].content + "</div>"
 							  + "	</div>"
 							  + "</div>";
 					};
@@ -369,10 +369,12 @@
 					$("#content").append(html).masonry("appended", html, true);	        
 					$("#content").masonry("reloadItems");	        
 					$("#content").masonry("layout");
-					init_masonry();
-					if(result.registList.length != 0) {
-						startDate = result.registList[0].regDate;
-					}
+					
+					startDate = result.registList[0].regDate;
+					startNo = maxNum;
+					
+					endDate = result.registList[result.registList.length - 1].regDate;
+					endNo = minNum;
 					
 					console.log(startDate);
 					timeline.moveTo(new Date(startDate), {animation: {duration: 1500, easingFunction: 'linear'}});
@@ -414,7 +416,7 @@
 	 
 	 var nextList = function () {
 			$.getJSON(
-					contextRoot + "/chronicle/next.do?call=" + call + "&pageNo=" + pageNo + "&startDate=" + startDate,
+					contextRoot + "/chronicle/next.do?pageNo=" + pageNo + "&startDate=" + startDate,
 					function (result) {
 						console.log(result);
 						if (result.registList.length == 0){
@@ -439,7 +441,6 @@
 							$("#content").append(html).masonry("appended", html, true);	        
 							$("#content").masonry("reloadItems");	        
 							$("#content").masonry("layout");
-							init_masonry();
 							timeline.moveTo(new Date(result.registList[0].regDate), {animation: {duration: 1500, easingFunction: 'linear'}});
 							pageNo++;
 						}
@@ -454,7 +455,7 @@
 			$.getJSON(
 					contextRoot + "/chronicle/list.do?pageNo=" + pageNo+ "&startDate=" + startDate,
 					function (result) {
-						if(result.registList.length == 0 || startDate == result.registList[0].regDate) {
+						if(result.registList.length == 0) {
 								swal({   title: "^^",   
 								text: "처음 페이지 입니다.",   
 								imageUrl: "../images/slide/success.jpg" });
@@ -474,9 +475,7 @@
 							$("#content").prepend(html).masonry("appended", html, true);	        
 							$("#content").masonry("reloadItems");	        
 							$("#content").masonry("layout");
-							init_masonry();
 							
-							startNo = result.registList[0].picNo;
 							
 							timeline.moveTo(new Date(startDate), {animation: {duration: 1500, easingFunction: 'linear'}});
 							$("#container").scrollTop(0);
