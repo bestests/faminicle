@@ -8,6 +8,7 @@ var slideShow=false;
 var slide;
 var mapView=false;
 var slideSpeed = false;
+var familyAndMeView =false;//가족보기,나혼자보기 클릭시 첫페이지 중복함수 예외처리
 
 //selete Content
 var selectDate;
@@ -56,7 +57,7 @@ function getList() {
 	$.getJSON(root,function(result){
 		console.log(result);
 		
-		if(result.registList.length==0 ||startNo == result.registList[0].picNo){
+		if(result.registList.length==0 ||(startNo == result.registList[0].picNo &&familyAndMeView == false)){
 			//수정해야함.
 			
 			swal({   
@@ -109,10 +110,13 @@ function getList() {
 			+'				<input type="hidden" id="mNo" value="'+result.registList[i].memNo+'" />                                                     '
 			+'				<input type="hidden" id="realMemNo" value="'+result.member.memNo+'" />                                                     '
 			+'				<div class="thumbImg" id="thumb_'+i+'"></div>                                                                  '
-			+'				<div class="imgIcon">                                                      '
-			+'					<button id="update" class="left"><img src="../images/slide/modify.png"/></button>'
-			+'					<button id="delete" class="left"><img src="../images/slide/delete.png"/></button>'
-			+'					<button id="mapView" class="right"><img src="../images/slide/map.png"/></button>'
+			+'				<div class="imgIcon">                                                      ';
+			if(result.member.memNo == result.registList[i].memNo){
+				html +='					<button id="update" class="left"><img src="../images/slide/modify.png"/></button>'
+					+'					<button id="delete" class="left"><img src="../images/slide/delete.png"/></button>';
+			};
+			
+			html +='					<button id="mapView" class="right"><img src="../images/slide/map.png"/></button>'
 			+'				</div>                                                                     '
 			+'			</div>                                                                         '
 			+'			<div class="imgMap">                                                           '
@@ -126,6 +130,7 @@ function getList() {
 			if(result.member.memNo!=result.registList[i].memNo){
 				$(".leftContent").css("background-color","rgba(1,116,223,0.8)");
 			}
+			familyAndMeView = false;// 가족,나혼자보기 클릭시 맨처음,맨끝에나올 메세지 함수 예외처리 해제
 		}
 		$("#stack").append(html);
 		//시작 끝 데이터 가져온다(페이징 위해서)
@@ -214,7 +219,7 @@ function imgDown(event) {
 	
 	if(selectMemNo != selectRealMemNo){
 	$.getJSON(
-			"http://localhost:2000/getThumb?callback=?&memNo="+ selectMemNo ,
+			socketRoot + "/getThumb?callback=?&memNo="+ selectMemNo ,
 			function (result) {
 				
 				console.dir(result);
@@ -373,6 +378,7 @@ function mapEvent(event){
 //	var yPoint = $(this).parents()[1].children[4].value;
 	
 //	console.log(" x : "+xPoint+" y :"+yPoint);
+	
 	
 	if(mapView==false){
 		$(".leftContent").css("left","0");	
@@ -642,7 +648,15 @@ function initialize(numCk,date,content,xPoint,yPoint) {
 //		alert("위치정보 null, Default값 적용");
 			xPoint=37.544553;
 			yPoint=127.017309;
-//			return false;
+			
+			
+			//값이 하나도 없을땐 실행하지 않는다. 원래대로 되돌려놓음.
+			$(".leftContent").css("left","25%");
+			$(".mapclass").hide();
+			mapView=false;
+			
+			return false;
+			
 	}
 	
 	var markerTitle = "마커 테스트";
@@ -710,7 +724,7 @@ function setMarkers(map, locations,date,content){
 	
 	
 }
-
+  
 function selectPicView(){
 	$("#toggleView").toggleClass("selectView");
 	var viewMsg="";
@@ -718,6 +732,7 @@ function selectPicView(){
 	if(call=="me"){
 		viewMessage = "가족사진을 보겠습니다.";
 		detailMsg = " 제 사진을 포함한 모든 사진을 보겠습니다."
+			
 	}else{
 		viewMessage = "나의 사진만 보겠습니다.";
 		detailMsg = " 가족사진을 제외한 나의 사진만 보겠습니다.";
@@ -738,8 +753,9 @@ function selectPicView(){
 					timer:1000,
 					html:true,
 					showConfirmButton: false 
+					
 				});
-			
+				
 			if($("#toggleView").hasClass("selectView")){
 				call="fam";
 				
@@ -748,9 +764,11 @@ function selectPicView(){
 				translate_z = z_space * -1;
 				html="";
 				realFlag=false;
+				familyAndMeView = true;
 				
 				doubleStopFlag=true;
 				getList();
+//				$("#toggleView").html("내사진 보기");
 			}else{
 				call="me";
 				
@@ -759,16 +777,15 @@ function selectPicView(){
 				translate_z = z_space * -1;
 				html="";
 				realFlag=false;
+				familyAndMeView = true;
 				
 				doubleStopFlag=true;
 				getList();
+//				$("#toggleView").html("가족사진 보기");
 			}
 		}
 	);
 }
-
-
-
 
 jQuery(document).ready(function () {
 	
