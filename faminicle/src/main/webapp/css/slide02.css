@@ -233,7 +233,7 @@ p{
 	position:relative;
 	top:10%;
 	margin: 10px;
-	color: white;
+	color: black;
 	font-size: 30px;
 }
 
@@ -365,24 +365,20 @@ iframe{
     line-height: 450%;
 }
 
-
 /*  #footer >div:hover {  */
-/*
-#main:hover, #regist:hover, #album:hover, .prev:hover, #play:hover, .next:hover, #logOut:hover, #family:hover {
-	border: 1px solid grey;
+#main:hover, #regist:hover, #album:hover, .prev:hover, #play:hover, .next:hover, #logOut:hover, #toggleView:hover {
 	background: lightblue;
    	border-radius: 20px;
 	color: black;
 	transition: .3s;	
 }
-*/
 
 /* 슬라이드 하위 메뉴 */
 
 #selectSpeed{
 /* 	outline: 3px solid red; */
 	position: absolute;
-	bottom: 160%;
+	bottom: 144%;
 	width: 30%;
 	height: 50%;
 	left:40%;
