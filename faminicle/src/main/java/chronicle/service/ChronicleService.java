@@ -12,6 +12,7 @@ import chronicle.domain.Regist;
 public interface ChronicleService {
 	public List<Regist> selectList(Page page);
 	public List<Regist> selectNextList(Page page);
+	public List<Regist> selectPrevList(Page page);
 	public void registMember(Members members);
 	public Integer checkId(Members members);
 	public Members loginCheck(LoginCheck loginInfo);

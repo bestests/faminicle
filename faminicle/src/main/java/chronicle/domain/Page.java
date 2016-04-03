@@ -11,7 +11,13 @@ public class Page {
 		this.startDate = startDate;
 		this.pageNo = (pageNo -1 ) * 24;
 	}
-
+	
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public void setPageNo(int pageNo) {
+		this.pageNo = pageNo;
+	}
 	public String getStartDate() {
 		return startDate;
 	}

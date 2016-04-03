@@ -47,7 +47,8 @@ public class ChronicleController {
 		Map<String, Object> result = new HashMap<>();
 		Members member = (Members)req.getSession().getAttribute("loginInfo");
 		
-		System.out.println("list.do에 타고 call값 : "+page.getCall());
+		System.out.println("list.do에 타고 call값 : " + page.getCall());
+		System.out.println("list.do에 타고 startDate : " + page.getStartDate());
 		page.setMemNo(member.getMemNo());
 		
 		String filePath = member.getMemPicPath();
@@ -80,8 +81,23 @@ public class ChronicleController {
 		
 		return result;
 	}
-//	@RequestMapping("prev.do")
 	
+	@RequestMapping("prev.do")
+	public Map<String,Object> prevList(int pageNo, String startDate, String call, HttpServletRequest req){
+		
+		Page page = new Page(startDate,pageNo);
+		page.setCall(call);
+		// 자신의 정보값과 가족들과 비교하기 위하여 세션값 사용 ****
+		Members member = (Members)req.getSession().getAttribute("loginInfo");
+		page.setMemNo(member.getMemNo());
+		
+		List<Regist> list =service.selectNextList(page); 
+		Map<String, Object> result = new HashMap<>();
+		result.put("registList", list);
+		result.put("member", member);
+		
+		return result;
+	}
 	
 	
 	@RequestMapping("registMember.do")

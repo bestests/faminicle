@@ -31,6 +31,11 @@ public class ChronicleServiceImpl implements ChronicleService{
 		System.out.println("call:"+page.getCall()+"페이지번호:"+page.getPageNo()+"시작일자:"+page.getStartDate()+"회원번호:"+page.getMemNo());
 		return dao.selectNextList(page);
 	}
+	
+	@Override
+	public List<Regist> selectPrevList(Page page) {
+		return dao.selectPrevList(page);
+	}
 
 	@Override
 	public void registMember(Members members) {
