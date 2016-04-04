@@ -768,7 +768,7 @@ function selectPicView(){
 				
 				doubleStopFlag=true;
 				getList();
-//				$("#toggleView").html("내사진 보기");
+				$("#toggleView").html("내사진 보기");
 			}else{
 				call="me";
 				
@@ -781,7 +781,7 @@ function selectPicView(){
 				
 				doubleStopFlag=true;
 				getList();
-//				$("#toggleView").html("가족사진 보기");
+				$("#toggleView").html("가족사진 보기");
 			}
 		}
 	);
