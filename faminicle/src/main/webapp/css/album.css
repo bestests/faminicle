@@ -1,0 +1,213 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+/* 	outline: 1px solid red; */
+}
+body, html{
+	width: 100%;
+	height: 100%;
+	background-image: url("../images/back01.jpg");
+	background-size: 100%;
+}
+#header{
+	width: 100%;
+}
+#prev{
+	width: 5%;
+	height: 90%;
+	float: left;
+	margin-right: 1%;
+}
+#next{
+	width: 5%;
+	height: 90%;
+	float: right;
+	margin-left: 1%;
+}
+
+
+#prev>img, #next>img{
+	width: 100%;
+	height: 10%
+}
+
+#tabline{
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	overflow: hidden;
+	font-family: Comic Sans MS;
+	
+	
+}
+#tab > div {
+	position: relative;
+	height: 100%;
+	width: 1%;
+	float: left;
+/* 	background:rgba(40,163,106,0.7); */
+	background:rgba(45,130,148,0.7);
+	text-align: center;
+	border: 2px dotted green;
+	border-radius: 0.5em;
+	color: white;
+	line-height: 29px;
+	transition:.5s ease;
+}
+#tab > div:hover{
+/* 	background: #95AED6; */
+	background:rgba(144,255,70,0.7);
+	color: black;
+}
+#tab{
+	position:relative;
+	left: 0;
+	width: 1000%;
+	height: 100%;
+	background: #807676;	
+	padding: 0px;
+}
+.page img{
+	width: auto;
+	height: auto;
+	max-width: 45%;
+	max-height: 48%;
+	min-width: 33%;
+	border: 1px solid blue;
+	margin: auto;
+	margin-left: 5px;
+	background: maroon;
+}
+.page {
+	height: 100%;
+}
+#back{
+	width: 100px;
+	height: 100px;
+	background: white;
+	position: absolute;
+	right: -49px;;
+	top: -65px;
+	transform: rotate(40Deg);
+}
+
+
+#menu {
+	width: 6%;
+	height: 62%;
+	background: rgba(54,145,176,0.9);
+	position: fixed;
+	right: 1.5%;
+	top: 23%;
+	text-align: center;
+	border: 3px solid white;
+	border-radius: 10px;
+	overflow: hidden;
+}
+#menu > div {
+	height: 81px;
+	width: 100%;
+	text-align: center;
+	line-height: 81px;
+	color: white;
+}
+.sideMenu{
+	font-family: Comic Sans MS;
+	font-size: 1.5em;
+}
+/* 안먹힘 */
+#home:hover{
+	color:red;
+/* 	background: rgba(41,77,161,0.7); */
+	background: red;
+}
+#top:hover{
+	background: rgba(44,116,171,0.7);
+}
+#slide:hover{
+	background: rgba(44,171,158,0.7);
+}
+#logOut:hover{
+	background: rgba(41,161,115,0,7);
+}
+/**/
+
+
+#menu > span{
+	width: 100%;
+	height: 6%;
+	display: block;
+	color: white;
+}
+#menu > div:hover{
+	font-family: Comic Sans MS;
+	background: lightblue;
+	color: black;
+}
+#menu > img {
+	width: 100%;
+	border: 2px solid black;
+	
+}
+#opadiv{
+	background:red;
+	width: 100%;
+	height:100%;
+	position: relative;
+	top: -42px;
+	z-index:100;
+	opacity: 0;
+}
+
+#book{
+	height: 86% !important;
+	width: 100%;
+	background: rgba(255,255,255,0);
+	top: 1%;
+}
+#date{
+	width: 30%;
+	height: 30%;
+	text-align: center;
+	background: rgba(232,250,255,0.9);
+	color:black;
+	overflow: hidden;
+	display: inline-block;
+	margin: 3px;
+	padding: 7px;
+	border-radius: 0.5em;
+	border : 5px double gray;
+	padding : 5px;
+	transition:.4s ease;
+	font-size: 2em;
+	font-family: Comic Sans MS;
+	
+}
+hr{
+	border: solid 1px gray;
+}
+#date:hover{
+	background: rgba(70,70,255,0.8);
+	color:white;
+}
+#dateContent{
+	display: block;
+	font-size: 70%;
+	
+}
+
+#image > img {
+	width: 50px;
+	height: 50px;
+	margin: 5px;
+	border: 2px solid white;
+}
+#noimage > img{
+	width: 100px;
+	height: 100px;
+}
+#image,#noimage{
+	position: relative;
+	top:-95%;
+}
