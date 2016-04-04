@@ -1,7 +1,7 @@
 	var startDate;
 	var startNo;
 	var pageNo = 1;
-	var call = "fam";
+	var call = "me";
 	
  	// Create a DataSet (allows two way data-binding)
 	var items = new vis.DataSet([]);
@@ -40,7 +40,7 @@
 				$("#infoModalImg").attr("src", result.member.memPicPath);
 				$("#thumbnail").attr("src",result.member.picMiniFilePath);
 			}
-			
+			if(result.family){
 			if(result.family.requestor != 'Y') {
 				if(result.family) {
 					$("#famInfo").empty();
@@ -50,7 +50,7 @@
 				$("#famName").val(result.family.famName)
 							 .attr("readonly", true);
 			}
-			
+			}
 			
 			$("#content").append(html);
 			init_masonry();
@@ -241,6 +241,11 @@
 				}, "json");
 			return false;
 		})
+		$('#infoModal').on('hidden.bs.modal', function () {
+			$.getJSON(contextRoot + "/chronicle/list.do?call=" + call, function (result) {
+				$("#thumbnail").attr("src",result.member.picMiniFilePath);
+			});
+			 });
 		
 	});
 		
@@ -270,9 +275,9 @@
 		var $container = $("#content");
 		
 		$container.imagesLoaded(function () {
-			$container.masonry({
+			$container.after($container.masonry({
 				itemSelector: ".box"
-			});
+			}))
 			$container.masonry("layout");
 		});
 	};
@@ -296,9 +301,6 @@
 		$("#updatebt").attr("disabled", "disabled");
 		$("#passchkLabel").html("현재 비밀번호");
 		$("#pass, #pass2, [name='eMail'], #tel").attr("readonly", true);
-		$.getJSON(contextRoot + "/chronicle/list.do", function (result) {
-		 	$("#thumbnail").attr("src",result.member.picMiniFilePath);
-		});
 	})
 	
 //	타임라인	
@@ -513,6 +515,7 @@
 					timeline.fit();
 					console.dir(items);
 					timeline.moveTo(new Date(result.evStart));
+					$("#eventModal").modal("hide");
 				},
 				"json"
 			);
@@ -626,8 +629,12 @@
 				holder.appendChild(img);
 				
 				updateMemberPic(file);
+				
 			};
 			reader.readAsDataURL(file);
+			$.getJSON(contextRoot + "/chronicle/list.do?call=" + call, function (result) {
+	        	 $("#thumbnail").attr("src",result.member.picMiniFilePath);
+	         });
 			return false;
 		};	 
 		
@@ -638,7 +645,8 @@
 		 
 		 $('#update').prop('target', 'upload_target');
          $('#update').prop('action', contextRoot + '/chronicle/updateMemberPic.do');
-         $('#update').submit();          
+         $('#update').submit();
+         
 
 // 		 var formData = new FormData(form); 
 // 		 console.dir(formData);

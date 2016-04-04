@@ -4,172 +4,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="../lib/sweetalert/dist/sweetalert.css">
-<style>
-*{
-	margin: 0px;
-	padding: 0px;
-	box-sizing: border-box;
-}
-body, html{
-	width: 100%;
-	height: 100%;
-	background-image: url("../images/back01.jpg");
-	background-size: 100%;
-}
-#header{
-	width: 100%;
-	height: 11%;
-	margin: 0px;
-	padding: 0px;
-}
-#book{
-	height: 86% !important;
-	width: 100%;
-	background: rgba(255,255,255,0);
-	top: 1%;
-}
-#date{
-	width: 30%;
-	height: 30%;
-	text-align: center;
-	background: lightgray;
-	color:black;
-	overflow: hidden;
-	display: inline-block;
-	margin: 3px;
-	padding: 7px;
-	border-radius: 0.5em;
-	border : 1px solid gray;
-	padding : 5px;
-	
-}
-#date:hover{
-	background: rgba(0,0,0,0.6);
-}
-#image > img {
-	width: 50px;
-	height: 50px;
-	margin: 5px;
-	border: 2px solid white;
-}
-#noimage > img{
-	width: 100px;
-	height: 100px;
-}
-#image,#noimage{
-	position: relative;
-	top:-95%;
-}
-#tabline{
-	width: 100%;
-	height: 100%;
-	background: #865555;
-	display: inline-block;
-	overflow: hidden;
-}
-#tab{
-	position:relative;
-	left: 0;
-	width: 1000%;
-	height: 100%;
-	background: #807676;	
-	padding: 0px;
-}
-#tab > div {
-	position: relative;
-	height: 100%;
-	width: 1%;
-	float: left;
-	background:#CFF69B;
-	text-align: center;
-	border: 1px solid black;
-	border-radius: 0.5em 0.5em 0 0;
-	color: black;
-	line-height: 29px;
-}
-#tab > div:hover{
-	background: #95AED6;
-	color: black;
-}
-.page img{
-	width: auto;
-	height: auto;
-	max-width: 45%;
-	max-height: 48%;
-	min-width: 33%;
-	border: 1px solid blue;
-	margin: auto;
-	margin-left: 5px;
-	background: maroon;
-}
-.page {
-	height: 100%;
-}
-#back{
-	width: 100px;
-	height: 100px;
-	background: white;
-	position: absolute;
-	right: -49px;;
-	top: -65px;
-	transform: rotate(40Deg);
-}
-#prev, #next{
-	width: 5%;
-	height: 90%;
-	display: none;
-	background-size: 100%;
-	background-repeat: no-repeat;
-}
-#prev>img, #next>img{
-	width: 100%;
-	height: 100%
-}
-#menu {
-	width: 6%;
-	height: 62%;
-	background: #d35f7a;
-	position: fixed;
-	right: 1.5%;
-	top: 23%;
-	text-align: center;
-	border: 1px solid white;
-	border-radius: 10px;
-	overflow: hidden;
-}
-#menu > div {
-	height: 81px;
-	width: 100%;
-	text-align: center;
-	line-height: 81px;
-	color: white;
-}
-#menu > span{
-	width: 100%;
-	height: 6%;
-	display: block;
-	color: white;
-}
-#menu > div:hover{
-	background: lightblue;
-	color: black;
-}
-#menu > img {
-	width: 100%;
-	border: 2px solid black;
-	
-}
-#opadiv{
-	background:red;
-	width: 100%;
-	height:100%;
-	position: relative;
-	top: -42px;
-	z-index:100;
-	opacity: 0;
-}
-
-</style>
+<link rel="stylesheet" href="../css/album.css">
 <link rel="stylesheet" href="../js/booklet/booklet/jquery.booklet.latest.css">
 <script src="../js/jquery-2.2.0.js"></script>
 <script src="../lib/sweetalert/dist/sweetalert.min.js"></script>
@@ -199,8 +34,8 @@ body, html{
 						+"</div>";
 						
 						bookHtml="<div class='date"+[i]+"' id='date'>"
-						+""+result.data[i].evTitle+"<br>"
-						+""+result.data[i].evStart+" ~ "+result.data[i].evEnd+""
+						+"<h4>"+result.data[i].evTitle+"</h4>"
+						+"<h6>"+result.data[i].evStart+" ~ "+result.data[i].evEnd+"</h6>"
 						+ "<form id='bForm'>"
 						+"<input type='hidden' name='evStart' value='"+result.data[i].evStart+"'>"
 						+"<input type='hidden' name='evEnd' value='"+result.data[i].evEnd+"'>"
@@ -235,7 +70,7 @@ body, html{
 									}
 								}else{
 									html="<img src='../images/slide/014.gif'>";
-									html+="<h1>사진이 없습니다</h1>";
+									html+="<h3>사진이 없습니다</h3>";
 									console.log(index);
 									$(".date"+index+"> #noimage").append(html);
 									index++;
