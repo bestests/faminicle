@@ -365,20 +365,24 @@ iframe{
     line-height: 450%;
 }
 
+
 /*  #footer >div:hover {  */
-#main:hover, #regist:hover, #album:hover, .prev:hover, #play:hover, .next:hover, #logOut:hover, #toggleView:hover {
+/*
+#main:hover, #regist:hover, #album:hover, .prev:hover, #play:hover, .next:hover, #logOut:hover, #family:hover {
+	border: 1px solid grey;
 	background: lightblue;
    	border-radius: 20px;
 	color: black;
 	transition: .3s;	
 }
+*/
 
 /* 슬라이드 하위 메뉴 */
 
 #selectSpeed{
 /* 	outline: 3px solid red; */
 	position: absolute;
-	bottom: 144%;
+	bottom: 150%;
 	width: 30%;
 	height: 50%;
 	left:40%;
@@ -424,7 +428,7 @@ iframe{
 
 #play div div{
 	display: none;	
-	background: darkslateblue;
+/* 	background: darkslateblue; */
 	border-radius: 15px; 	
 }
 #play:hover div div{
@@ -433,4 +437,8 @@ iframe{
 
 #play:hover div:hover .1:hover {
 /* 	background: orange; */
+}
+
+div#play {
+    color: salmon;
 }
