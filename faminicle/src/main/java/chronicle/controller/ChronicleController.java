@@ -381,7 +381,7 @@ public class ChronicleController {
 		
 		service.registFam(fam);
 		
-		return null;
+		return new AjaxResult("success", fam);
 	}
 }
 

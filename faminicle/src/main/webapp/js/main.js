@@ -53,9 +53,9 @@
 						$("#famInfo").empty();
 						$("#famInfo").html("<h4>가족 태그 : </h4><h3>" + result.family.famName + "</h3>");
 					}
-				} else if(result.family.requestor == 'N') {
+				} else  {
 					$("#famName").val(result.family.famName)
-					.attr("readonly", true);
+					             .attr("readonly", true);
 				}
 			}
 			
@@ -957,9 +957,7 @@
 					closeOnCancel: false
 				},
 				function (isConfirm) {
-					alert(data.reqIdNo);
 					if (isConfirm) {
-						swal("가족 요청 수락", "'" + data.reqId + "' 님과  '" + data.famName + "' 가족이 되셨습니다.", "success");
 						$.getJSON(
 								contextRoot + "/chronicle/registFam.do",
 								{
@@ -969,6 +967,9 @@
 								},
 								function (result) {
 									console.dir(result);
+									swal("가족 요청 수락", "'" + data.reqId + "' 님과  '" + data.famName + "' 가족이 되셨습니다.", "success");
+									$("#famInfo").empty();
+									$("#famInfo").html("<h4>가족 태그 : </h4><h3>" + result.family.famName + "</h3>");
 								}
 						);
 					} else {
