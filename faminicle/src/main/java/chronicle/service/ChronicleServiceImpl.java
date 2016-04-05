@@ -24,6 +24,8 @@ public class ChronicleServiceImpl implements ChronicleService{
 	
 	@Override
 	public List<Regist> selectList(Page page) {
+		System.out.println(page.getCall());
+		System.out.println(page.getMemNo());
 		return dao.selectList(page);
 	}
 	

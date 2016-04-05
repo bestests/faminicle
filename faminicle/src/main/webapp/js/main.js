@@ -1,17 +1,20 @@
 	var startDate;
 	var startNo;
-	var pageNo = 1;
+	var pageNo = 2;
 	var call = "me";
-	
+	var isFirst = true;
  	// Create a DataSet (allows two way data-binding)
 	var items = new vis.DataSet([]);
-	$(function () {  
-	 	var html = "";
+	var getList = function (call) {
+		var html = "";
 		$.getJSON(contextRoot + "/chronicle/list.do?call=" + call, function (result) {
 			console.dir(result);
-			for(var i in result.registList) {	
+			for(var i in result.registList) {
+				console.log(result.registList[i].memNo);
+				console.log(result.registList[i].memNo == result.member.memNo ? true : false);
 				html += "<div class='box'>"
-					  + "	<img src='" + result.registList[i].picFilePath + "' />"
+					  + "	<img src='" + result.registList[i].picFilePath  
+					  + (result.registList[i].memNo == result.member.memNo ? "' />" : "' style='border-radius: 20px 0px 20px 0px;' />")
 					  + "	<div class='detail' onselectstart='return false;'>"
 					  + "		<input type='hidden' value='" + result.registList[i].picNo + "' />" 	
 					  + "		<div class='detailDate'>" + result.registList[i].regDate + "</div>"
@@ -20,12 +23,15 @@
 					  + "</div>";
 			};
 			
-			for(var j in result.eventDay) {
-				if(result.eventDay[j].evEnd == '1000-01-01') {
-					items.add({id: result.eventDay[j].evNo, content: result.eventDay[j].evTitle, start: result.eventDay[j].evStart});
-				} else {
-					items.add({id: result.eventDay[j].evNo, content: result.eventDay[j].evTitle, start: result.eventDay[j].evStart, end: result.eventDay[j].evEnd});
+			if(isFirst) {
+				for(var j in result.eventDay) {
+					if(result.eventDay[j].evEnd == '1000-01-01') {
+						items.add({id: result.eventDay[j].evNo, content: result.eventDay[j].evTitle, start: result.eventDay[j].evStart});
+					} else {
+						items.add({id: result.eventDay[j].evNo, content: result.eventDay[j].evTitle, start: result.eventDay[j].evStart, end: result.eventDay[j].evEnd});
+					}
 				}
+				isFirst = false;
 			}
 			if(result.registList.length != 0) {
 				startDate = result.registList[0].regDate;
@@ -40,21 +46,25 @@
 				$("#infoModalImg").attr("src", result.member.memPicPath);
 				$("#thumbnail").attr("src",result.member.picMiniFilePath);
 			}
-			if(result.family){
-			if(result.family.requestor != 'Y') {
-				if(result.family) {
-					$("#famInfo").empty();
-					$("#famInfo").html("<h4>가족 태그 : </h4><h3>" + result.family.famName + "</h3>");
+			
+			if(result.family) {
+				if(result.family.requestor != 'Y') {
+					if(result.family) {
+						$("#famInfo").empty();
+						$("#famInfo").html("<h4>가족 태그 : </h4><h3>" + result.family.famName + "</h3>");
+					}
+				} else if(result.family.requestor == 'N') {
+					$("#famName").val(result.family.famName)
+					.attr("readonly", true);
 				}
-			} else {
-				$("#famName").val(result.family.famName)
-							 .attr("readonly", true);
-			}
 			}
 			
-			$("#content").append(html);
+			$("#content").empty();
+			$("#content").append(html).masonry("appended", html, true);	        
+			$("#content").masonry("reloadItems");	        
+			$("#content").masonry("layout");
 			init_masonry();
-			pageNo++;
+			pageNo = 2;
 		}).fail(function () {
 			swal({   title: "로그인 해주세요!! ^^",   
 				text: "로그인 하셔야 faminicle 서비스를 이용 하실 수 있습니다.",   
@@ -62,6 +72,9 @@
 			location.href="login.html";
 			
 		});
+	}
+	$(function () {  
+	 	getList("me");
 		
 		
 //		init_masonry();
@@ -245,8 +258,7 @@
 			$.getJSON(contextRoot + "/chronicle/list.do?call=" + call, function (result) {
 				$("#thumbnail").attr("src",result.member.picMiniFilePath);
 			});
-			 });
-		
+		});
 	});
 		
 		
@@ -277,7 +289,7 @@
 		$container.imagesLoaded(function () {
 			$container.after($container.masonry({
 				itemSelector: ".box"
-			}))
+			}));
 			$container.masonry("layout");
 		});
 	};
@@ -342,6 +354,7 @@
 		
 	  // 이벤트 선택 시 날짜 데이터
 	  timeline.on('select', function (properties) {
+		  event.stopPropagation();
 		  console.log("start : " + items._data[properties.items[0]].start);
 		  console.log("end : " + items._data[properties.items[0]].end);
 		  $.get(
@@ -629,12 +642,8 @@
 				holder.appendChild(img);
 				
 				updateMemberPic(file);
-				
 			};
 			reader.readAsDataURL(file);
-			$.getJSON(contextRoot + "/chronicle/list.do?call=" + call, function (result) {
-	        	 $("#thumbnail").attr("src",result.member.picMiniFilePath);
-	         });
 			return false;
 		};	 
 		
@@ -645,8 +654,7 @@
 		 
 		 $('#update').prop('target', 'upload_target');
          $('#update').prop('action', contextRoot + '/chronicle/updateMemberPic.do');
-         $('#update').submit();
-         
+         $('#update').submit();          
 
 // 		 var formData = new FormData(form); 
 // 		 console.dir(formData);
@@ -821,6 +829,19 @@
 		  */
 			    };
 			};
+			
+	$("#changeView").click(function (e) {
+		e.stopPropagation();
+		if(call == "me") {
+			call = "fam";
+			$("#changeView").text("내사진보기");
+		}else {
+			call = "me";
+			$("#changeView").text("가족사진보기");
+		}
+		getList(call);
+	});
+			
 	/*
 	 * 	node 작업
 	 * */

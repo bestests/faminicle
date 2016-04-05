@@ -40,7 +40,7 @@
 		<result column="requestor" property="requestor" />
 	</resultMap>
 	
-	<select id="selectList" resultMap="picMap">
+	<select id="selectList" parameterType="page" resultMap="picMap">
 		select *
 	      from fam_pic
 		 where mem_no 
@@ -49,12 +49,12 @@
 					in (select mem_no
 						  from family
 						  where fam_name in (select fam_name
-											  from family
-											  where mem_no= #{memNo}
+											   from family
+											  where mem_no = #{memNo}
 											  <if test="startDate != null">
 											  	and pic_date <![CDATA[<=]]> #{startDate}
-											  order by pic_date 	
 											  </if>
+											  order by pic_date 	
 									      	 )
 						)
 		  </when>
@@ -62,10 +62,9 @@
 	      	= #{memNo}
 	      	<if test="startDate != null">
 		  	  and pic_date <![CDATA[<=]]> #{startDate}
-		    </if>	
+		    </if>
 	      </otherwise>
 	    </choose>
-	    	
 			order by pic_date desc
 			limit 24
 	</select>

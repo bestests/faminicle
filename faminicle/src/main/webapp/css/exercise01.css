@@ -192,7 +192,7 @@
     	border-bottom-right-radius: 13px;
 	}
 	
-	#infoId:hover,#regist:hover, #slide:hover, #album:hover, #logOut:hover {
+	#infoId:hover,#regist:hover, #slide:hover, #album:hover, #logOut:hover, #changeView:hover {
 		background: lightblue;
 		order-bottom-left-radius: 13px;
     	border-bottom-right-radius: 13px;
