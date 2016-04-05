@@ -637,7 +637,6 @@ function initialize(numCk,date,content,xPoint,yPoint) {
 	if(xPoint==""&&yPoint==""){
 		swal({   
 			title: "<span style='color:#FF0000'>사진에 위치정보가 없습니다.</span>",   
-			text: "Default값을 우선 적용시킵니다.",
 			imageUrl: "../images/slide/balls.svg",
 			timer:1500,
 			html:true,
