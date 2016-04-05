@@ -214,12 +214,12 @@
 			if($("#pass").val()) {
 				var regPass = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
 				if( !regPass.test($("#pass").val())){
-					alert("비밀번호는 특수문자와 숫자를 포함하여 8~16자로 설정하여야합니다.");
+					swal("비밀번호는 특수문자와 숫자를 포함하여 8~16자로 설정하여야합니다.","","error");
 					return false;
 				}
 				
 				if($("#pass").val() != $("#pass2").val()){
-					alert("비밀번호가 일치하지 않습니다. 다시한번 확인해주세요");
+					swal("비밀번호가 일치하지 않습니다. 다시한번 확인해주세요","","error");
 					$("#pass2").focus();
 					
 					return false;
@@ -231,7 +231,7 @@
 			
 			var regTel = /^\d{10,11}$/;
 			if( !regTel.test($("#tel").val())){
-				alert("연락처는 -없이 숫자(10~11자리)만 입력 가능합니다");
+				swal("연락처는 -없이 숫자(10~11자리)만 입력 가능합니다","","error");
 				return false;
 			}
 			
@@ -294,9 +294,9 @@
 		});
 	};
 	
-	var eventTypeChk = function () {
-		alert($("#eventTypeChk").val());
-	};
+//	var eventTypeChk = function () {
+//		swal($("#eventTypeChk").val());
+//	};
 	
 	var deleteEvent = function (item) {
 		items.remove(item.id);
@@ -549,7 +549,7 @@
 					swal({   title: "수정 완료",   
 						text: "해당 이미지의 정보가 수정되었습니다.",   
 						imageUrl: "../images/slide/success.jpg" });
-//					alert("수정이 완료되었습니다.");
+//					swal("수정이 완료되었습니다.");
 					$("#myModal").modal("hide");
 					
 				}, "json"
@@ -665,7 +665,7 @@
 // 				data: formData,
 // 				type: 'POST',
 // 				success: function(data) {
-// 					alert(1);
+// 					swal(1);
 // 				}, dataType: 'json' 
 // 			});
 		}
@@ -979,8 +979,3 @@
 			);
 		}
 	});
-	
-	$("#thumbnailDiv").on("click", "#fam_icon", function () {
-		alert($("#reqId").val() + " 님에게" + $("#reqFamName").val() + " 가족 신청이 왔습니다.");
-	});
-	
