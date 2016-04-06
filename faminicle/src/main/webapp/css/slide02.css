@@ -261,14 +261,14 @@ p{
 .imgIcon .left{
 	float:left;
 	margin: 0 1%;
-	width: 15%;
+	width: 13%;
 	height: 100%;
 	border-radius:5%;
 }
 .imgIcon .right{
 	float:right;
 	margin: 0 1%;
-	width: 15%;
+	width: 13%;
 	height: 100%;
 	border-radius:5%;
 }
