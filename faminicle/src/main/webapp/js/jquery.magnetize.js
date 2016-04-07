@@ -18,7 +18,7 @@
 				scale : [0.14, 0.23, 0.35], //image scale-down for each layer
 				corner_w : 3, //image corner roll-over width
 				corner_l : 30, //image corner roll-over side length
-				corner_color : "#ffffff", //image corner roll-over color
+				corner_color : "#000000", //image corner roll-over color
 				hover_color : "rgba(0, 0, 0, .35)" //entire image roll-over color and opacity
 		};
 		
@@ -100,6 +100,7 @@
 			main.css({"height" : Math.floor($(window).width()/settings.fixed_ratio), "max-width" : "100%"});	
 		}
 				
+//		===========================================의심==============================================
 		var loaded_imgs = 0, //number of images, which are already loaded
 			total = $all_images.length, //total number of images in the collection
 			//main = $(this).css("height" , settings.main_height), //slideshow viewport

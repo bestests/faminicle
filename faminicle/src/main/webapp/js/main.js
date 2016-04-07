@@ -878,7 +878,7 @@
 						if($("#thumbTd").html()) {
 							$("#famNameLabel").show();
 							$("#famName").show();
-							if($("#famName")) {
+							if($("#famName").val()) {
 								$("#reqFamBtn").removeAttr("disabled");
 							}
 						}
