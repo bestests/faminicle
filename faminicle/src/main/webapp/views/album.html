@@ -136,12 +136,12 @@
 						html +="<div class='page'>";
 						if(count < 4){
 							for(var k =0; k < count; k++){
-							html += "<img src='"+result.data[index].picFilePath +"'>";
+							html += "<div id='box"+k+"'><img src='"+result.data[index].picFilePath +"'></div>";
 							index++;
 							}
 						}else{
 							for(var j =0; j<4; j++){
-							html += "<img src='"+result.data[index].picFilePath +"'>";
+							html += "<div id='box"+j+"'><img src='"+result.data[index].picFilePath +"'></div>";
 							index++;
 							}
 							count = count - 4;
@@ -150,7 +150,7 @@
 					}
 					$("#book").append(html);
 					$('#book').booklet({
-						height: '88%',
+						height: '85%',
 				    	width: '86%',
 				    	pagePadding: 10
 				    });
@@ -180,12 +180,12 @@
 						html +="<div class='page'>";
 						if(count < 4){
 							for(var k =0; k < count; k++){
-							html += "<img src='"+result.data[index].picFilePath +"'>";
+							html += "<div id='box"+k+"'><img src='"+result.data[index].picFilePath +"'></div>";
 							index++;
 							}
 						}else{
 							for(var j =0; j<4; j++){
-							html += "<img src='"+result.data[index].picFilePath +"'>";
+							html += "<div id='box"+j+"'><img src='"+result.data[index].picFilePath +"'></div>";
 							index++;
 							}
 							count = count - 4;
@@ -195,7 +195,7 @@
 					$("#book").unbind( 'click' );
 					$("#book").append(html);
 					$('#book').booklet({
-				    	height: '88%',
+				    	height: '85%',
 				    	width: '86%',
 				    	pagePadding: 10
 				    });
