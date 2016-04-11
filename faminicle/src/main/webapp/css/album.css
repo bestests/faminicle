@@ -89,7 +89,7 @@ body, html{
 	top: 2%;
 	left: 2%;
 	text-align: center;
-	line-height: 33;​
+	line-height: 26;​
 	
 }
 #box1{
@@ -100,7 +100,7 @@ body, html{
 	top: 2%;
 	right: 2%;
 	text-align: center;
-	line-height: 33;
+	line-height: 26;
 }
 #box2{
 	width: 45%;
@@ -110,7 +110,7 @@ body, html{
 	bottom: 2%;
 	left: 2%;
 	text-align: center;
-	line-height: 33;
+	line-height: 26;
 }
 #box3{
 	width: 45%;
@@ -120,7 +120,7 @@ body, html{
 	bottom: 2%;
 	right: 2%;
 	text-align: center;
-	line-height: 33;
+	line-height: 26;
 }
 #back{
 	width: 100px;

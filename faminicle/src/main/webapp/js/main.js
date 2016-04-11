@@ -14,7 +14,7 @@
 				console.log(result.registList[i].memNo == result.member.memNo ? true : false);
 				html += "<div class='box'>"
 					  + "	<img src='" + result.registList[i].picFilePath  
-					  + (result.registList[i].memNo == result.member.memNo ? "' />" : "' style='border-radius: 20px 0px 20px 0px;' />")
+					  + (result.registList[i].memNo == result.member.memNo ? "' />" : "' style='border-radius: 20px 0px 20px 0px; border: 1px solid tomato;' />")
 					  + "	<div class='detail' onselectstart='return false;'>"
 					  + "		<input type='hidden' value='" + result.registList[i].picNo + "' />" 	
 					  + "		<div class='detailDate'>" + result.registList[i].regDate + "</div>"
@@ -57,6 +57,9 @@
 					$("#famName").val(result.family.famName)
 					             .attr("readonly", true);
 				}
+			} else {
+				$("#changeView").empty()
+								.removeAttr("id");
 			}
 			
 			$("#content").empty();
@@ -255,6 +258,14 @@
 			return false;
 		})
 		$('#infoModal').on('hidden.bs.modal', function () {
+			$("#updatebt").attr("disabled", "disabled");
+			$("#mpass").html("현재 비밀번호");
+			$("#pass, #pass2, [name='eMail'], #tel").attr("readonly", true);
+			$("#famNameChk, #thumbTd, #result").empty();
+			$("#famNameLabel").hide();
+			$("#famName").hide();
+			$("#reqFamBtn").attr("disabled", true);
+			$("#famId, #famName").val("");
 			$.getJSON(contextRoot + "/chronicle/list.do?call=" + call, function (result) {
 				$("#thumbnail").attr("src",result.member.picMiniFilePath);
 			});
@@ -311,8 +322,9 @@
 	
 	$("#close").click (function () {
 		$("#updatebt").attr("disabled", "disabled");
-		$("#passchkLabel").html("현재 비밀번호");
+		$("#mpass").html("현재 비밀번호");
 		$("#pass, #pass2, [name='eMail'], #tel").attr("readonly", true);
+		$("#famNameChk").empty();
 	})
 	
 //	타임라인	
@@ -408,6 +420,7 @@
 					console.log("startNo : " + startNo);
 					$("#container").scrollTop(0);
 					
+					pageNo = 2;	
 				}
 			
 		);
@@ -845,7 +858,7 @@
 	/*
 	 * 	node 작업
 	 * */
-	var socket = io.connect("http://localhost:2000");
+	var socket = io.connect(socketRoot);
 	
 	// 가족 아이디 찾기
 	$("#famId").keyup(function () {
@@ -863,7 +876,7 @@
 		}
 		else {
 			$.getJSON(
-				"http://localhost:2000/checkId?callback=?&chkId=" + $("#famId").val(),
+					socketRoot+"/checkId?callback=?&chkId=" + $("#famId").val(),
 				function (result) {
 					console.dir(result);
 					$("#result").text(result.result);
@@ -891,10 +904,13 @@
 	// 가족 이름 input 창 이벤트
 	$("#famName").keyup(function () {
 		console.log($("#famName").val().length);
+		$("#famNameChk").empty();
 		if($("#famName").val().length >= 3) {
 			$("#reqFamBtn").removeAttr("disabled");
 		} else {
 			$("#reqFamBtn").attr("disabled", "disabled");
+			$("#famNameChk").text("(가족이름은 3자 이상 가능합니다.)")
+							.css("color", "red");
 		}
 	});
 	
@@ -912,7 +928,7 @@
 		console.log(resIdNo);
 		console.log(famName);
 		$.getJSON(
-			"http://localhost:2000/reqFam?callback=?&reqId="   + reqId   + 
+			socketRoot+"/reqFam?callback=?&reqId="   + reqId   + 
 												   "&resId="   + resId   +
 												   "&reqIdNo=" + reqIdNo +
 												   "&resIdNo=" + resIdNo +

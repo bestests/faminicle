@@ -68,7 +68,7 @@
               <input type="password" class="form-control" name="pass"  id="pass" placeholder="비밀번호" title="필수입력란입니다." required="required">
             </div>
             <div class="form-group">
-              <label for="InputPassword2">비밀번호 확인 <span id='chkResult'></span></label>
+              <label id="pass2Label" for="InputPassword2">비밀번호 확인 <span id='chkResult'></label>
               <input type="password" class="form-control" id="pass2" placeholder="비밀번호 확인" title="필수입력란입니다." required="required">
             </div>
              <div class="form-group">
@@ -214,17 +214,23 @@
       });
       
       $("#pass2, #pass").keyup(function () {
-          $("#chkResult").empty();
-          if($("#pass2").val()) {
-             if($("#pass").val() == $("#pass2").val()) {
-                $("#chkResult").html(" (비밀번호가 일치합니다)")
-                             .css("color", "blue");
-             } else {
-                $("#chkResult").html(" (비밀번호가 일치하지 않습니다)")
-                             .css("color", "red");
-             }
-          }
-       });
+    	  $("#chkResult").empty();
+    	  if($("#pass2").val()) {
+	    	  if($("#pass").val() == $("#pass2").val()) {
+	    		  $("#chkResult").html(" (비밀번호가 일치합니다)")
+	    		  				 .css("color", "blue");
+	    	  } else {
+	    		  $("#chkResult").html(" (비밀번호가 일치하지 않습니다)")
+	    		  				 .css("color", "red");
+	    	  }
+    	  }
+      });
+      
+      
+      
+      
+      
+      
    
 //       $("#memberReg").click(function() {
 //          $.post(contextRoot + "/chronicle/registMember.do", {

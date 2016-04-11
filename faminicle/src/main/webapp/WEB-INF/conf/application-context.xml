@@ -44,7 +44,7 @@
         class="org.apache.commons.dbcp.BasicDataSource" 
         destroy-method="close">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-    <property name="url" value="jdbc:mysql://localhost:3306/test01db"/>
+    <property name="url" value="jdbc:mysql://localhost:3306/faminicle_db"/>
     <property name="username" value="java77"/>
     <property name="password" value="1111"/>
   </bean>
